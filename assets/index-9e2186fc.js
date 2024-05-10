@@ -887,4 +887,4 @@ Values:
 `,S$=eo.div`
   max-width: 900px;
   margin: 0 auto;
-`;function M$(){const{network:e}=l0();return an(x$,{children:an(S$,{children:ji(KM,{children:[ji(co,{children:[an(iz,{}),an(hc,{children:e?e===Zs.MAINNET?"mainnet":"testnet":"N/A"})]}),an(_$,{})]})})})}const A$="https://github.com/Extiint/TonMiner/blob/master/public/tonconnect-manifest.json",E$=new NA({defaultOptions:{queries:{refetchOnWindowFocus:!1}}});em.createRoot(document.getElementById("root")).render(an(tz,{manifestUrl:A$,children:an(FC,{client:E$,children:an(M$,{})})}));
+`;function M$(){const{network:e}=l0();return an(x$,{children:an(S$,{children:ji(KM,{children:[ji(co,{children:[an(iz,{}),an(hc,{children:e?e===Zs.MAINNET?"mainnet":"testnet":"N/A"})]}),an(_$,{})]})})})}const A$="https://extiint.github.io/TonMiner/tonconnect-manifest.json",E$=new NA({defaultOptions:{queries:{refetchOnWindowFocus:!1}}});em.createRoot(document.getElementById("root")).render(an(tz,{manifestUrl:A$,children:an(FC,{client:E$,children:an(M$,{})})}));
