@@ -27,7 +27,7 @@ const AppContainer = styled.div`
 function App() {
   const {network} = useTonConnect()
   const showAlert = () => {
-    WebApp.showAlert("Hey there!");
+    WebApp.showAlert(`Hey there! You are currently on ${WebApp.platform}`);
   };
   return (
     <TonConnectUIProvider
@@ -63,6 +63,7 @@ function App() {
       <AppContainer>
         <FlexBoxCol>
           <FlexBoxRow>
+            
           <b>{WebApp.platform}</b>
             <TonConnectButton/>
             <Button>
