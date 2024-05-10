@@ -5,6 +5,7 @@ import { Button, FlexBoxCol, FlexBoxRow } from "./components/styled/styled";
 import { CHAIN, TonConnectButton } from "@tonconnect/ui-react";
 import { useTonConnect } from "./hooks/useTonConnect";
 import "@twa-dev/sdk"
+import WebApp from "@twa-dev/sdk";
 
 const StyledApp = styled.div`
   background-color: #e8e8e8;
@@ -25,12 +26,15 @@ const AppContainer = styled.div`
 
 function App() {
   const {network} = useTonConnect()
-
+  const showAlert = () => {
+    WebApp.showAlert("Hey there!");
+  };
   return (
     <StyledApp>
       <AppContainer>
         <FlexBoxCol>
           <FlexBoxRow>
+          <b>{WebApp.platform}</b>
             <TonConnectButton/>
             <Button>
               {network
@@ -41,6 +45,13 @@ function App() {
             </Button>
           </FlexBoxRow>
           <Jetton />
+          <a
+          onClick={() => {
+            showAlert();
+          }}
+        >
+          Show Alert
+        </a>
         </FlexBoxCol>
       </AppContainer>
     </StyledApp>
