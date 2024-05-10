@@ -1,0 +1,325 @@
+#pragma version =0.4.4;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+#include "tact_Test.headers.fc";
+#include "tact_Test.stdlib.fc";
+#include "tact_Test.storage.fc";
+
+;;
+;; Contract Test functions
+;;
+
+(slice, int, int, int, int, int, cell) $Test$_contract_init(int $id) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = (null(), null(), null(), null(), null(), null(), null());
+    $self'id = $id;
+    $self'marketEggs = 259200000000;
+    $self'PSN = 10000;
+    $self'PSNH = 5000;
+    $self'EGGS_TO_HATCH_1MINERS = 2592000;
+    $self'owner = __tact_context_get_sender();
+    $self'balances = null();
+    return ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances);
+}
+
+((slice, int, int, int, int, int, cell), tuple) $Test$_fun_balanceOff((slice, int, int, int, int, int, cell) $self, slice $address) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), $User$_load_opt(__tact_dict_get_slice_cell($self'balances, 267, $address)));
+}
+
+((slice, int, int, int, int, int, cell), int) $Test$_fun_min((slice, int, int, int, int, int, cell) $self, int $a, int $b) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), (($a < $b) ? $a : $b));
+}
+
+((slice, int, int, int, int, int, cell), int) $Test$_fun_getEggsSinceLastHatch((slice, int, int, int, int, int, cell) $self, slice $address, (int, int, int) $myUser) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    var (($myUser'lastHatch, $myUser'hatcheryMiners, $myUser'claimedEggs)) = $myUser;
+    int $secondsPassed = ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_min($self'EGGS_TO_HATCH_1MINERS, (now() - $myUser'lastHatch));
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), ($secondsPassed * $myUser'hatcheryMiners));
+}
+
+((slice, int, int, int, int, int, cell), int) $Test$_fun_getMyEggs((slice, int, int, int, int, int, cell) $self, slice $address) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    var ($myUser'lastHatch, $myUser'hatcheryMiners, $myUser'claimedEggs) = $User$_not_null(($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_balanceOff($address));
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), (($myUser'claimedEggs + ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_getEggsSinceLastHatch($address, ($myUser'lastHatch, $myUser'hatcheryMiners, $myUser'claimedEggs))) * 100));
+}
+
+((slice, int, int, int, int, int, cell), ()) $Test$_fun_hatchEggs((slice, int, int, int, int, int, cell) $self) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    var ($myUser'lastHatch, $myUser'hatcheryMiners, $myUser'claimedEggs) = $User$_not_null(($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_balanceOff(__tact_context_get_sender()));
+    int $myeggs = ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_getMyEggs(__tact_context_get_sender());
+    int $newMiners = ($myeggs / $self'EGGS_TO_HATCH_1MINERS);
+    $self'marketEggs = $self'marketEggs + ($myUser'claimedEggs / 5);
+    $self'balances~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $User$_store_cell($User$_constructor_lastHatch_hatcheryMiners_claimedEggs(now(), ($myUser'hatcheryMiners + $newMiners), 0)));
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), ());
+}
+
+((slice, int, int, int, int, int, cell), int) $Test$_fun_calculateTrade((slice, int, int, int, int, int, cell) $self, int $rt, int $rs, int $bs) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), (($self'PSN * $bs) / ($self'PSNH + ((($self'PSN * $rs) + ($self'PSNH * $rt)) / $rt))));
+}
+
+((slice, int, int, int, int, int, cell), int) $Test$_fun_calculateEggBuy((slice, int, int, int, int, int, cell) $self, int $ton, int $contractbalance) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_calculateTrade($ton, $contractbalance, $self'marketEggs));
+}
+
+((slice, int, int, int, int, int, cell), int) $Test$_fun_calculateEggSell((slice, int, int, int, int, int, cell) $self, int $eggs) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_calculateTrade($eggs, $self'marketEggs, __tact_my_balance()));
+}
+
+((slice, int, int, int, int, int, cell), int) $Test$_fun_lastHatch((slice, int, int, int, int, int, cell) $self, slice $address) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    var ($myUser'lastHatch, $myUser'hatcheryMiners, $myUser'claimedEggs) = $User$_not_null(($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_balanceOff($address));
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), $myUser'lastHatch);
+}
+
+((slice, int, int, int, int, int, cell), int) $Test$_fun_hatcheryMiners((slice, int, int, int, int, int, cell) $self, slice $address) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    var ($myUser'lastHatch, $myUser'hatcheryMiners, $myUser'claimedEggs) = $User$_not_null(($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_balanceOff($address));
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), $myUser'hatcheryMiners);
+}
+
+((slice, int, int, int, int, int, cell), int) $Test$_fun_claimedEggs((slice, int, int, int, int, int, cell) $self, slice $address) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    var ($myUser'lastHatch, $myUser'hatcheryMiners, $myUser'claimedEggs) = $User$_not_null(($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_balanceOff($address));
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), $myUser'claimedEggs);
+}
+
+((slice, int, int, int, int, int, cell), int) $Test$_fun_mybalance((slice, int, int, int, int, int, cell) $self) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), __tact_my_balance());
+}
+
+((slice, int, int, int, int, int, cell), slice) $Test$_fun_owner((slice, int, int, int, int, int, cell) $self) impure inline_ref {
+    var (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)) = $self;
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), $self'owner);
+}
+
+;;
+;; Receivers of a Contract Test
+;;
+
+(((slice, int, int, int, int, int, cell)), ()) $Test$_internal_binary_BuyMiners((slice, int, int, int, int, int, cell) $self, tuple $msg) impure inline {
+    var ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances) = $self;
+    var $msg = $msg;
+    throw_unless(3935, ($Context$_get_value(__tact_context_get()) >= 50000000));
+    int $eggsBought = ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_calculateEggBuy($Context$_get_value(__tact_context_get()), (__tact_my_balance() - $Context$_get_value(__tact_context_get())));
+    tuple $myUser = ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_balanceOff(__tact_context_get_sender());
+    if ((~ null?($myUser))) {
+        var ($myUser2'lastHatch, $myUser2'hatcheryMiners, $myUser2'claimedEggs) = $User$_not_null(($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_balanceOff(__tact_context_get_sender()));
+        $self'balances~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $User$_store_cell($User$_constructor_lastHatch_hatcheryMiners_claimedEggs($myUser2'lastHatch, $myUser2'hatcheryMiners, ($myUser2'claimedEggs + $eggsBought))));
+    } else {
+        $self'balances~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $User$_store_cell($User$_constructor_lastHatch_hatcheryMiners_claimedEggs(0, 0, $eggsBought)));
+    }
+    $global_send($SendParameters$_constructor_to_value($self'owner, (($Context$_get_value(__tact_context_get()) * 4) / 100)));
+    ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_hatchEggs();
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), ());
+}
+
+(((slice, int, int, int, int, int, cell)), ()) $Test$_internal_binary_Add((slice, int, int, int, int, int, cell) $self, tuple $msg) impure inline {
+    var ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances) = $self;
+    var $msg = $msg;
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), ());
+}
+
+(((slice, int, int, int, int, int, cell)), ()) $Test$_internal_binary_SellEggs((slice, int, int, int, int, int, cell) $self, tuple $msg) impure inline {
+    var ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances) = $self;
+    var $msg = $msg;
+    var ($myUser'lastHatch, $myUser'hatcheryMiners, $myUser'claimedEggs) = $User$_not_null(($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_balanceOff(__tact_context_get_sender()));
+    int $myeggs = ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_getMyEggs(__tact_context_get_sender());
+    int $eggValue = ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_calculateEggSell($myeggs);
+    $self'balances~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $User$_store_cell($User$_constructor_lastHatch_hatcheryMiners_claimedEggs(now(), $myUser'hatcheryMiners, 0)));
+    $self'marketEggs = $self'marketEggs + $myeggs;
+    $global_send($SendParameters$_constructor_to_value(__tact_context_get_sender(), $eggValue));
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), ());
+}
+
+(((slice, int, int, int, int, int, cell)), ()) $Test$_internal_binary_Deploy((slice, int, int, int, int, int, cell) $self, (int) $deploy) impure inline {
+    var ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances) = $self;
+    var ($deploy'queryId) = $deploy;
+    ($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances)~$Test$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
+    return (($self'owner, $self'id, $self'marketEggs, $self'PSN, $self'PSNH, $self'EGGS_TO_HATCH_1MINERS, $self'balances), ());
+}
+
+;;
+;; Get methods of a Contract Test
+;;
+
+_ %calculateEggBuy(int $$ton, int $$contractbalance) method_id(104975) {
+    int $ton = $$ton;
+    int $contractbalance = $$contractbalance;
+    var self = $Test$_contract_load();
+    var res = self~$Test$_fun_calculateEggBuy($ton, $contractbalance);
+    return res;
+}
+
+_ %calculateEggSell(int $$eggs) method_id(86575) {
+    int $eggs = $$eggs;
+    var self = $Test$_contract_load();
+    var res = self~$Test$_fun_calculateEggSell($eggs);
+    return res;
+}
+
+_ %calculateTrade(int $$rt, int $$rs, int $$bs) method_id(105807) {
+    int $rt = $$rt;
+    int $rs = $$rs;
+    int $bs = $$bs;
+    var self = $Test$_contract_load();
+    var res = self~$Test$_fun_calculateTrade($rt, $rs, $bs);
+    return res;
+}
+
+_ %getMyEggs(slice $$address) method_id(84205) {
+    slice $address = __tact_verify_address($$address);
+    var self = $Test$_contract_load();
+    var res = self~$Test$_fun_getMyEggs($address);
+    return res;
+}
+
+_ %getEggsSinceLastHatch(slice $$address, tuple $$myUser) method_id(92843) {
+    slice $address = __tact_verify_address($$address);
+    (int, int, int) $myUser = $User$_from_tuple($$myUser);
+    var self = $Test$_contract_load();
+    var res = self~$Test$_fun_getEggsSinceLastHatch($address, $myUser);
+    return res;
+}
+
+_ %balanceOff(slice $$address) method_id(82109) {
+    slice $address = __tact_verify_address($$address);
+    var self = $Test$_contract_load();
+    var res = self~$Test$_fun_balanceOff($address);
+    return $User$_to_opt_external(res);
+}
+
+_ %lastHatch(slice $$address) method_id(70588) {
+    slice $address = __tact_verify_address($$address);
+    var self = $Test$_contract_load();
+    var res = self~$Test$_fun_lastHatch($address);
+    return res;
+}
+
+_ %hatcheryMiners(slice $$address) method_id(86124) {
+    slice $address = __tact_verify_address($$address);
+    var self = $Test$_contract_load();
+    var res = self~$Test$_fun_hatcheryMiners($address);
+    return res;
+}
+
+_ %claimedEggs(slice $$address) method_id(79923) {
+    slice $address = __tact_verify_address($$address);
+    var self = $Test$_contract_load();
+    var res = self~$Test$_fun_claimedEggs($address);
+    return res;
+}
+
+_ %min(int $$a, int $$b) method_id(124384) {
+    int $a = $$a;
+    int $b = $$b;
+    var self = $Test$_contract_load();
+    var res = self~$Test$_fun_min($a, $b);
+    return res;
+}
+
+_ %mybalance() method_id(121299) {
+    var self = $Test$_contract_load();
+    var res = self~$Test$_fun_mybalance();
+    return res;
+}
+
+_ %owner() method_id(83229) {
+    var self = $Test$_contract_load();
+    var res = self~$Test$_fun_owner();
+    return res;
+}
+
+_ supported_interfaces() method_id {
+    return (
+        "org.ton.introspection.v0"H >> 128,
+        "org.ton.abi.ipfs.v0"H >> 128,
+        "org.ton.deploy.lazy.v0"H >> 128,
+        "org.ton.chain.workchain.v0"H >> 128,
+        "org.ton.ownable"H >> 128
+    );
+}
+
+_ get_abi_ipfs() method_id {
+    return "ipfs://QmPk7n1xYJ9N3W7YRSKemBdB7VnGgQ1JvgTk4XRdCtKBsW";
+}
+
+_ lazy_deployment_completed() method_id {
+    return get_data().begin_parse().load_int(1);
+}
+
+;;
+;; Routing of a Contract Test
+;;
+
+((slice, int, int, int, int, int, cell), int) $Test$_contract_router_internal((slice, int, int, int, int, int, cell) self, int msg_bounced, slice in_msg) impure inline_ref {
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    
+    ;; Receive BuyMiners message
+    if (op == 3269710549) {
+        var msg = in_msg~$BuyMiners$_load();
+        self~$Test$_internal_binary_BuyMiners(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Add message
+    if (op == 973670713) {
+        var msg = in_msg~$Add$_load();
+        self~$Test$_internal_binary_Add(msg);
+        return (self, true);
+    }
+    
+    ;; Receive SellEggs message
+    if (op == 979070491) {
+        var msg = in_msg~$SellEggs$_load();
+        self~$Test$_internal_binary_SellEggs(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Deploy message
+    if (op == 2490013878) {
+        var msg = in_msg~$Deploy$_load();
+        self~$Test$_internal_binary_Deploy(msg);
+        return (self, true);
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = -(msg_flags & 1);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = $Test$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$Test$_contract_router_internal(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(130, handled);
+    
+    ;; Persist state
+    $Test$_contract_store(self);
+}
