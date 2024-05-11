@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Button, FlexBoxCol, FlexBoxRow } from "./components/styled/styled";
 import { CHAIN, TonConnectButton , TonConnectUIProvider , THEME} from "@tonconnect/ui-react";
 import { useTonConnect } from "./hooks/useTonConnect";
+import SimpleGame from './components/SimpleGame'
 import "@twa-dev/sdk"
 import WebApp from "@twa-dev/sdk";
 
@@ -59,32 +60,14 @@ function App() {
               twaReturnUrl: 'https://t.me/DemoDappWithTonConnectBot/demo'
           }}
       >
-    <StyledApp>
-      <AppContainer>
-        <FlexBoxCol>
-          <FlexBoxRow>
             
-          <b>{WebApp.platform}</b>
+          <div style={{position:'absolute'}}>
             <TonConnectButton/>
-            <Button>
-              {network
-                ? network === CHAIN.MAINNET
-                  ? "mainnet"
-                  : "testnet"
-                : "N/A"}
-            </Button>
-          </FlexBoxRow>
-          <Jetton />
-          <a
-          onClick={() => {
-            showAlert();
-          }}
-        >
-          Show Alert
-        </a>
-        </FlexBoxCol>
-      </AppContainer>
-    </StyledApp>
+            </div>
+            <div className="full-screen">
+            <SimpleGame />
+            </div>
+         
     </TonConnectUIProvider>
   );
 }
