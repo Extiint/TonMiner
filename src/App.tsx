@@ -31,6 +31,7 @@ function App() {
   const showAlert = () => {
     WebApp.showAlert(`Hey there! You are currently on ${WebApp.platform}`);
   };
+
   useEffect(() => {
     WebApp.expand();
   }, []);
@@ -65,12 +66,18 @@ function App() {
               twaReturnUrl: 'https://t.me/DemoDappWithTonConnectBot/demo'
           }}
       >
-          <div style={{position:'absolute'}}>
-            <TonConnectButton/>
-            </div>
-            <div className="full-screen">
+         <div style={{
+            position: 'absolute',
+            top: '10px',
+            left: '50%',
+            transform: 'translateX(-50%)'
+        }}>
+            <TonConnectButton />
+        </div>
+        <div className="full-screen">
             <SimpleGame />
-            </div>
+        </div>
+
          
     </TonConnectUIProvider>
   );
