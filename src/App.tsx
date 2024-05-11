@@ -7,6 +7,7 @@ import { useTonConnect } from "./hooks/useTonConnect";
 import SimpleGame from './components/SimpleGame'
 import "@twa-dev/sdk"
 import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 
 const StyledApp = styled.div`
   background-color: #e8e8e8;
@@ -30,6 +31,10 @@ function App() {
   const showAlert = () => {
     WebApp.showAlert(`Hey there! You are currently on ${WebApp.platform}`);
   };
+  useEffect(() => {
+    WebApp.expand();
+  }, []);
+
   return (
     <TonConnectUIProvider
           manifestUrl="https://extiint.github.io/TonMiner/tonconnect-manifest.json"
@@ -60,7 +65,6 @@ function App() {
               twaReturnUrl: 'https://t.me/DemoDappWithTonConnectBot/demo'
           }}
       >
-            
           <div style={{position:'absolute'}}>
             <TonConnectButton/>
             </div>
