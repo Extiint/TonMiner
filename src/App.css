@@ -52,3 +52,39 @@ html, body {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
 }
 
+.image-style {
+  cursor: pointer;        
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  height: 90px;
+  animation: pulse 2s infinite ease-in-out, shine 2s infinite ease-in-out; /* Two animations */
+}
+
+.idiamonds {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  animation: shine 2s infinite ease-in-out; /* Two animations */
+}
+
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1); /* Original size */
+  }
+  50% {
+    transform: scale(1.02); /* Scale up to 105% of the original size */
+  }
+}
+@keyframes shine {
+  0%, 100% {
+    filter: brightness(1) contrast(1); /* Normal state */
+  }
+  50% {
+    filter: brightness(1.4) contrast(1.1); /* Brighter and more contrast in the middle of the animation */
+  }
+}
+
+

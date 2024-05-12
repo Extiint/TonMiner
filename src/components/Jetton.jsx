@@ -33,7 +33,7 @@ export function Jetton() {
            <TonConnectButton style={{marginTop:'15px'}}/>
               <Box display="flex" alignItems="center" justifyContent="center" gap={2} sx={{ width: '100%', backgroundColor: '#30302F', padding: '10px 0' }}>
                 
-                  <Box component="img" src={diamond} alt="Descriptive Alt Text" sx={{ width: 70}} />
+                  <Box component="img" className='idiamonds' src={diamond} alt="Descriptive Alt Text" sx={{ width: 70}} />
                   <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'center' }}>
                     PENDING TON: 0.152 
                   </div>
@@ -46,9 +46,9 @@ export function Jetton() {
                 <Box component="img" src={backgroundImage} alt="Full Width Image" sx={{ width: '100%', height: 'auto' }} />
               
                 <Box sx={{ position: 'absolute', bottom: 40, width: '100%', display: 'flex', justifyContent: 'space-around' }}>
-                  <img src={g1} alt="First Image" style={{ width: 'auto', height: '90px' }} />
-                  <img src={g2} alt="Second Image" style={{ width: 'auto', height: '90px' }} />
-                  <img src={g3} alt="Third Image" style={{ width: 'auto', height: '90px' }} />
+                  <img src={g1} className='image-style' alt="First Image" style={{ width: 'auto' }} />
+                  <img src={g2} className='image-style' alt="Second Image" style={{ width: 'auto'}} />
+                  <img src={g3} className='image-style' alt="Third Image" style={{ width: 'auto' }} />
                 </Box>
               </Box>
 
@@ -64,7 +64,7 @@ export function Jetton() {
             <Typography variant="body1" sx={{ textAlign: 'center' }}>
               Rewards: {rewards} TON
             </Typography>
-            <Box display="flex" justifyContent="center" gap={1}>
+            <Box display="flex" justifyContent="center" gap={1} sx={{marginBottom:'4%'}}>
               <Button variant="contained" disabled={!connected} onClick={buy}>
                 Buy Miners
               </Button>
