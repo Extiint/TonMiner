@@ -6,13 +6,13 @@ import { useTonConnect } from '../hooks/useTonConnect';
 import { useJettonContract } from '../hooks/useJettonContract';
 
 interface IMenuScene extends Phaser.Scene {
-  updateData(data: { balance: number; miner: number; rewards: number }): void;
+  updateData(data: { balance: number; miner: number; rewards: number , refCode: string | null }): void;
 }
 
 const SimpleGame: React.FC = () => {
   const { connected } = useTonConnect();
-  const {balance , miner, lasthatch,rewards, buy,sell} = useJettonContract()
-
+  const {refCode, balance , miner, lasthatch,rewards, buy,sell} = useJettonContract()
+console.log(refCode,"in the toher")
   const gameRef = useRef<Phaser.Game | null>(null);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const SimpleGame: React.FC = () => {
         if(gameRef.current){
           const scene = gameRef.current.scene.getScene('MenuScene') as IMenuScene;
           if (scene) {
-              scene.updateData({ balance, miner, rewards });
+              scene.updateData({ balance, miner, rewards ,refCode });
           }
       }
     }
@@ -58,9 +58,6 @@ const SimpleGame: React.FC = () => {
         }
     }
 }, [connected, balance, miner, lasthatch, rewards]);
-
-
-
 
 
   return <div id="phaser-example" style={{ width: '100vw', height: '100vh' }} />;

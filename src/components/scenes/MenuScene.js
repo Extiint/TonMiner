@@ -15,13 +15,14 @@ export default class MenuScene extends Phaser.Scene {
     }
     
   
-    updateData({ balance, miner, lastHatch, rewards }) {
+    updateData({ balance, miner, lastHatch, rewards , refCode}) {
         // Update the text objects directly
         console.log(balance,miner,rewards)
         this.balanceText.setText(`Balance: ${balance}`);
         this.minerText.setText(`Miner: ${miner}`);
         this.lastHatchText.setText(`Last Hatch: ${lastHatch}`);
         this.rewardsText.setText(`Rewards: ${rewards}`);
+        this.rewardsText.setText(`Ref: ${refCode}`);
     }
   }
   

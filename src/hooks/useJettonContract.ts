@@ -39,9 +39,10 @@ export function useJettonContract() {
                 setBalance(Number(balanceInNano));
 
                 if(Number(balanceInNano) > 0){
-                    const fetchedMiner = await jettonContract.getHatcheryMiners(Address.parse(Address.parse(wallet!).toString()));
-                    const lastHatch = await jettonContract.getLastHatch(Address.parse(Address.parse(wallet!).toString()));
-                    const myeggs = await jettonContract.getGetMyEggs(Address.parse(Address.parse(wallet!).toString()));
+                    const address = Address.parse(Address.parse(wallet!).toString());
+                    const fetchedMiner = await jettonContract.getHatcheryMiners(address);
+                    const lastHatch = await jettonContract.getLastHatch(address);
+                    const myeggs = await jettonContract.getGetMyEggs(address);
                     const rewards = await jettonContract.getCalculateEggSell(myeggs);
                     //const ww = await jettonContract.hatchEggs();
 
@@ -63,6 +64,7 @@ export function useJettonContract() {
     }, [jettonContract, wallet]);
 
     return {
+        refCode,
         balance,
         miner,
         lasthatch,
