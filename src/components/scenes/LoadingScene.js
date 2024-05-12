@@ -1,6 +1,8 @@
+
 class LoadingScene extends Phaser.Scene {
-    constructor() {
+    constructor(connected) {
         super({ key: 'LoadingScene' });
+        this.isConnected = connected;
     }
 
     preload() {
@@ -32,8 +34,9 @@ class LoadingScene extends Phaser.Scene {
             repeat: -1,
             ease: 'Linear'
         });
-
-        this.scene.launch("MenuScene")
+        if(this.isConnected){
+            this.scene.launch("MenuScene")
+        }
     }
 }
 

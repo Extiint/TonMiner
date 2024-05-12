@@ -27,7 +27,7 @@ const SimpleGame: React.FC = () => {
         width:'100%',
         height:'100%'
       },
-      scene: [LoadingScene, MenuScene]
+      scene: [new LoadingScene(connected), MenuScene]
     };
   
     gameRef.current = new Phaser.Game(config);
@@ -38,7 +38,7 @@ const SimpleGame: React.FC = () => {
         gameRef.current.destroy(true);
       }
     };
-  }, []);
+  }, [connected]);
 
   useEffect(() => {
     if (gameRef.current) {
