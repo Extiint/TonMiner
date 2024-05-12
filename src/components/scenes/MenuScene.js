@@ -6,11 +6,9 @@ export default class MenuScene extends Phaser.Scene {
         super({ key: 'MenuScene' });
     }
 
-
     create() {
         this.cameras.main.backgroundColor.setTo(53, 52, 51);
 
-       
         const rectWidth = this.cameras.main.width;
         const rectHeight = 50;
         const rectColor = 0x30302F; 
@@ -21,20 +19,25 @@ export default class MenuScene extends Phaser.Scene {
 
         const graphics = this.add.graphics();
         graphics.fillStyle(rectColor, 1);
+
         const rect = graphics.fillRect(0, rectY, rectWidth, rectHeight);
 
         const image = this.add.image(47, rectY + 24, 'diamond'); 
-        const desiredWidth = this.scale.width * 0.2;
-        const desiredWidth2 = this.scale.width * 0.22;
+        const background = this.add.image(0, 113, 'back1').setOrigin(0, 0);
+        const scaleback = rectWidth / background.width; // Ensure the background covers the full width
+
+        // Set the scale of the background image
+        background.setScale(scaleback);
+
+        const desiredWidth = rectWidth * 0.2;
+        const desiredWidth2 = rectWidth * 0.22;
         const scaleFactor = desiredWidth / image.width;
         const scaleFactor2 = desiredWidth2 / image.width;
         // Set the scale of the image
         image.setScale(scaleFactor);
-        
-       
         createText(this, centerX - 105, rectY + 20, 'TOTAL MINED: 13.5', { fontSize: '12px', color: 'white' });
 
-        const button = this.add.image(this.scale.width * 0.8, rectY + 31, 'b_button').setInteractive();
+        const button = this.add.image(rectWidth * 0.8, rectY + 31, 'b_button').setInteractive();
         button.on('pointerdown', () => {
             console.log('Button clicked');
         });
@@ -48,6 +51,8 @@ export default class MenuScene extends Phaser.Scene {
         this.rewardsText = this.add.text(centerX, centerY + 30, 'Rewards:', { fontSize: '16px', fill: '#FFF' }).setOrigin(0.5);
         this.refCodeText = this.add.text(centerX, centerY + 60, 'Ref:', { fontSize: '16px', fill: '#FFF' }).setOrigin(0.5);
     }
+
+
     
     updateData({ balance, miner, lastHatch, rewards, refCode }) {
         if (this.balanceText && this.minerText && this.lastHatchText && this.rewardsText && this.refCodeText){

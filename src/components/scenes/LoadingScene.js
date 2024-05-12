@@ -8,6 +8,7 @@ class LoadingScene extends Phaser.Scene {
         this.load.image('background', 'background.png');
         this.load.image('diamond', '/media/icons/diamante.png');
         this.load.image('b_button', '/media/buttons/blue.png');
+        this.load.image('back1', '/media/bg/bg1.png');
     }
 
     create() {
