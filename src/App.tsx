@@ -9,10 +9,6 @@ import { useEffect } from "react";
 
 function App() {
 
-  useEffect(() => {
-    WebApp.expand();
-  }, []);
-
   return (
     <TonConnectUIProvider
           manifestUrl="https://extiint.github.io/TonMiner/tonconnect-manifest.json"
