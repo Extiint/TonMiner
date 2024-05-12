@@ -1,10 +1,9 @@
 import "./App.css";
-import { Jetton } from "./components/Jetton";
 import styled from "styled-components";
 import { Button, FlexBoxCol, FlexBoxRow } from "./components/styled/styled";
 import { CHAIN, TonConnectButton , TonConnectUIProvider , THEME} from "@tonconnect/ui-react";
-import { useTonConnect } from "./hooks/useTonConnect";
-import SimpleGame from './components/SimpleGame'
+import SimpleGame from './components/SimpleGame';
+import { Jetton } from "./components/Jetton";
 import "@twa-dev/sdk"
 import WebApp from "@twa-dev/sdk";
 import { useEffect } from "react";
@@ -27,7 +26,7 @@ const AppContainer = styled.div`
 `;
 
 function App() {
-  const {network} = useTonConnect()
+
   const showAlert = () => {
     WebApp.showAlert(`Hey there! You are currently on ${WebApp.platform}`);
   };

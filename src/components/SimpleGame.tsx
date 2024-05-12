@@ -12,24 +12,27 @@ interface IMenuScene extends Phaser.Scene {
 const SimpleGame: React.FC = () => {
   const { connected } = useTonConnect();
   const {refCode, balance , miner, lasthatch,rewards, buy,sell} = useJettonContract()
-console.log(refCode,"in the toher")
+  console.log(lasthatch,"in the toher")
   const gameRef = useRef<Phaser.Game | null>(null);
 
   useEffect(() => {
-    const maxWidth = 500;
-    const maxHeight = 1000;
-    const width = Math.min(window.innerWidth, maxWidth);
-        const height = Math.min(window.innerHeight, maxHeight);
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.AUTO,
       parent: 'phaser-example',
-      width: width,
-      height: height,
-      scene: [LoadingScene, MenuScene]  // Include the MenuScene in the game's scene list
+      width: 375,  // Original game width
+      height: 812, // Original game height
+      scale: {
+        mode: Phaser.Scale.FIT, // Disable Phaser's built-in scaling
+        autoCenter: Phaser.Scale.CENTER_BOTH ,
+        width:'100%',
+        height:'100%'
+      },
+      scene: [LoadingScene, MenuScene]
     };
-
+  
     gameRef.current = new Phaser.Game(config);
-
+  
+  
     return () => {
       if (gameRef.current) {
         gameRef.current.destroy(true);
@@ -38,29 +41,27 @@ console.log(refCode,"in the toher")
   }, []);
 
   useEffect(() => {
-    // This function will check if the MenuScene is ready and then update its data
-    function updateSceneData() {
-        if(gameRef.current){
-          const scene = gameRef.current.scene.getScene('MenuScene') as IMenuScene;
-          if (scene) {
-              scene.updateData({ balance, miner, rewards ,refCode });
-          }
-      }
-    }
-
     if (gameRef.current) {
-        if (connected) {
-          gameRef.current.scene.stop('LoadingScene');
-            gameRef.current.scene.start('MenuScene');  // Start MenuScene if connected
-            updateSceneData();  // Attempt to update data right after starting the scene
-        } else {
-            gameRef.current.scene.start('LoadingScene');  // Go back to LoadingScene if not connected
-        }
+          gameRef.current.scene.start('LoadingScene');  
     }
+}, []);
+
+useEffect(() => {
+  function updateSceneData() {
+    if(gameRef.current){
+      const scene = gameRef.current.scene.getScene('MenuScene') as IMenuScene;
+      if (scene) { 
+        scene.updateData({ balance, miner, rewards, refCode });
+      }
+  }
+}
+  if (connected && gameRef.current && gameRef.current.scene.getScene('MenuScene')) {
+        updateSceneData();
+  }
 }, [connected, balance, miner, lasthatch, rewards]);
 
 
-  return <div id="phaser-example" style={{ width: '100vw', height: '100vh' }} />;
+  return <div id="phaser-example" style={{ maxWidth:'500px' }} />;
 };
 
 export default SimpleGame;

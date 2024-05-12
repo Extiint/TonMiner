@@ -5,8 +5,6 @@ import { useAsyncInitialize } from "./useAsyncInitialize";
 import { useTonClient } from "./useTonClient";
 import { useTonConnect } from "./useTonConnect";
 
-const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve, time))
-
 export function useJettonContract() {
     const {client} = useTonClient();
     const {wallet, sender} = useTonConnect();
@@ -15,6 +13,8 @@ export function useJettonContract() {
     const [lasthatch, setlastHatch] = useState(0);
     const [rewards, setrewards] = useState(0);
     const [refCode, setRefCode] = useState<string | null>(null);
+
+    let isSync = false;
 
     const jettonContract = useAsyncInitialize(async()=>{
         if(!client || !wallet) return;
@@ -32,27 +32,38 @@ export function useJettonContract() {
         let intervalId: ReturnType<typeof setInterval> | null = null; 
         
         async function updateBalance() {
-            if (!jettonContract || !wallet) return;
+            if (!jettonContract || !wallet || !client) return;
             try {
+                if (isSync){return;}
+                isSync = true;
+                const address = Address.parse(Address.parse(wallet!).toString());
+
                 const fetchedBalance = await jettonContract.getMybalance();
+                const latestBlock = (await client.getLastBlock()).last.seqno;
+                const balance = await client.getAccount(latestBlock,address)
+                console.log(balance,"balance")
                 const balanceInNano = fromNano(fetchedBalance);
                 setBalance(Number(balanceInNano));
 
                 if(Number(balanceInNano) > 0){
-                    const address = Address.parse(Address.parse(wallet!).toString());
-                    const fetchedMiner = await jettonContract.getHatcheryMiners(address);
-                    const lastHatch = await jettonContract.getLastHatch(address);
-                    const myeggs = await jettonContract.getGetMyEggs(address);
+                  
+                    console.log("reached")
+                    const [fetchedMiner, lastHatch, myeggs] = await Promise.all([
+                        jettonContract.getHatcheryMiners(address),
+                        jettonContract.getLastHatch(address),
+                        jettonContract.getGetMyEggs(address),
+                    ]);
+                    
                     const rewards = await jettonContract.getCalculateEggSell(myeggs);
                     //const ww = await jettonContract.hatchEggs();
-
-                    console.log(rewards)
+                    isSync = false;
                     setlastHatch(Number(lastHatch));
                     setMiner(Number(fetchedMiner));
                     setrewards(Number(fromNano(rewards)));
             }
             } catch (error) {
                 console.error('Error fetching balance:', error);
+                isSync = false;
             }
         }
 

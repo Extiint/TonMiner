@@ -6,6 +6,8 @@ class LoadingScene extends Phaser.Scene {
     preload() {
         this.load.image('loader', 'miner.png');
         this.load.image('background', 'background.png');
+        this.load.image('diamond', '/media/icons/diamante.png');
+        this.load.image('b_button', '/media/buttons/blue.png');
     }
 
     create() {
@@ -29,6 +31,8 @@ class LoadingScene extends Phaser.Scene {
             repeat: -1,
             ease: 'Linear'
         });
+
+        this.scene.launch("MenuScene")
     }
 }
 

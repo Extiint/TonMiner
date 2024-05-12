@@ -1,21 +1,26 @@
-import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { CHAIN } from "@tonconnect/ui-react";
-import { TonClient } from "ton";
-import { useAsyncInitialize } from "./useAsyncInitialize";
+
 import { useTonConnect } from "./useTonConnect";
+import { getHttpV4Endpoint } from "@orbs-network/ton-access";
+import { useEffect, useState } from "react";
+import { TonClient4 } from "ton";
 
 export function useTonClient() {
-    const {network} = useTonConnect()
+    const { network } = useTonConnect();
+    const [client, setClient] = useState<TonClient4 | null>(null); // Explicitly type the state
+    useEffect(() => {
+        if (!network) {
+            setClient(null);
+            return;
+        }
 
-    return {
-        client: useAsyncInitialize(async ()=>{
-            if(!network) return;
+        const initializeClient = async () => {
+            const endpoint = await getHttpV4Endpoint({ network: "testnet" });
+            const newClient = new TonClient4({ endpoint });
+            setClient(newClient);
+        };
 
-            return new TonClient({
-                endpoint: await getHttpEndpoint({
-                    network: network === CHAIN.MAINNET ? "mainnet" : "testnet"
-                })
-            })
-        }, [network])
-    }
+        initializeClient();
+    }, [network]); 
+
+    return { client };
 }
