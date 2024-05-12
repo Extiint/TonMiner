@@ -6,7 +6,6 @@ class LoadingScene extends Phaser.Scene {
     preload() {
         this.load.image('loader', 'miner.png');
         this.load.image('background', 'background.png');
-
     }
 
     create() {
@@ -21,7 +20,7 @@ class LoadingScene extends Phaser.Scene {
     const scale = Math.max(scaleX, scaleY);
     backImage.setScale(scale).setScrollFactor(0);
 
-        this.add.text(centerX, centerY + 100, 'Loading...', { font: '20px Arial', fill: '#ffffff' }).setOrigin(0.5);
+        this.add.text(centerX, centerY + 100, 'Connect Your Wallet!', { font: '20px Arial', fill: '#ffffff' }).setOrigin(0.5);
 
         this.tweens.add({
             targets: loaderImage,

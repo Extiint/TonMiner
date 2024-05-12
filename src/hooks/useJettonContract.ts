@@ -14,10 +14,14 @@ export function useJettonContract() {
     const [miner, setMiner] = useState(0);
     const [lasthatch, setlastHatch] = useState(0);
     const [rewards, setrewards] = useState(0);
+    const [refCode, setRefCode] = useState<string | null>(null);
 
     const jettonContract = useAsyncInitialize(async()=>{
         if(!client || !wallet) return;
-
+        const queryParams = new URLSearchParams(window.location.search);
+        const refCodeFromURL = queryParams.get('refCode') || null;
+        setRefCode(refCodeFromURL);
+        console.log(refCodeFromURL,"here")
         const contract = Test.fromAddress(Address.parse("EQDqFF0X1sAZYsg4rJ4u7ENrb_7nwQCbv4GOUtFnSib58S7_"))
 
         return client.open(contract) as OpenedContract<Test>
@@ -51,7 +55,7 @@ export function useJettonContract() {
             }
         }
 
-        intervalId = setInterval(updateBalance, 5000);  // Update every 5000 ms.
+        intervalId = setInterval(updateBalance, 2000);  // Update every 5000 ms.
 
         return () => {
             if (intervalId) clearInterval(intervalId);  // Clear interval on component unmount
