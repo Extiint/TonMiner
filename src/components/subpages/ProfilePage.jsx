@@ -5,10 +5,10 @@ import ProfileFox from '../../media/bg/profileFox.png'
 
 import line from '../../media/bg/line.png'
 
-const ProfilePage = React.forwardRef((props, ref) => {
-    // State to manage scale transformation
-    const [translateY, setTranslateY] = useState('-100%'); // Start above the viewport
 
+
+const ProfilePage = React.forwardRef((props, ref) => { 
+        const [translateY, setTranslateY] = useState('-100%'); // Start above the viewport
     useEffect(() => {
         // Slide down to 0% (original position)
         const timer = setTimeout(() => {
@@ -48,7 +48,7 @@ const ProfilePage = React.forwardRef((props, ref) => {
               </Box>
               <Box component="img" src={backgroundProfile} alt="Full Width Image" sx={{ width: '100%', height: '80%' }} />
 
-              <Box  sx={{ position: 'absolute', top: 70, width: '60%', justifyContent: 'center', padding: '20px 0px'}}>
+              <Box  sx={{ position: 'absolute', top: '10vh', width: '60%', justifyContent: 'center', padding: '20px 0px'}}>
                 <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '7px 0', marginBottom:1  }}>
                         <div className='inter'>
                             USE A COUPON
@@ -57,8 +57,8 @@ const ProfilePage = React.forwardRef((props, ref) => {
                         <input
                             type="text"
                             placeholder="INPUT CODE"
-                            className="profileb"  
-                            style={{maxWidth:'90px'}}
+                            className="profilet"  
+                            style={{maxWidth:'80px'}}
                         />
                         </div>
                         <div className='inter' style={{fontSize:'9px'}}>
@@ -66,7 +66,7 @@ const ProfilePage = React.forwardRef((props, ref) => {
                         </div>
                     </Box>
 
-                    <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '7px 0', marginBottom:1  }}>
+                    <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '7px 0', marginBottom:1, zIndex:10  }}>
                         <div className='inter' style={{fontSize:'14px'}}>
                         BUY HASH POWER
                         </div>
@@ -74,8 +74,8 @@ const ProfilePage = React.forwardRef((props, ref) => {
                         <input
                             type="text"
                             placeholder="TON AMOUNT"
-                            className="profileb"  
-                            style={{maxWidth:'94px'}}
+                            className="profilet"  
+                            style={{maxWidth:'90px'}}
                         />
                         </div>
                         <div className='inter' style={{fontSize:'10px'}}>
@@ -88,11 +88,12 @@ const ProfilePage = React.forwardRef((props, ref) => {
 
                 </Box>
 
-                <Box sx={{ position: 'absolute', bottom: 180, width: '100%', display: 'flex', justifyContent: 'right' , right:20}}>
-                  <img src={ProfileFox}  alt="First Image" style={{ width: '60%',maxWidth:'180px' }}/>
+                <Box sx={{ position: 'absolute', bottom: '27vh', width: '40%', display: 'flex', justifyContent: 'right' , right:20}}>
+                  <img src={ProfileFox}  alt="First Image" style={{ width: '25vh'}}/>
                 </Box>
+  
 
-              <Box  sx={{ position: 'absolute', bottom: 15, width: '100%', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '5px 0px'}}>
+              <Box  sx={{ position: 'relative', bottom: 110, width: '100%', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '0.5vh 0px'}}>
                 <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '5px 0', marginBottom:1  }}>
                         <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%'}}>
                             YOUR PROMO CODE
@@ -103,7 +104,7 @@ const ProfilePage = React.forwardRef((props, ref) => {
                             </button>
                         </div>
                     </Box>
-                    <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '3px 0' }}>
+                    <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '0.5vh 0' }}>
                         <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%'}}>
                             TOT REFERRALS
                         </div>
@@ -111,11 +112,11 @@ const ProfilePage = React.forwardRef((props, ref) => {
                             REWARDS
                         </div>
                     </Box>
-                    <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '3px 0', marginBottom:1 }}>
-                        <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%', fontSize:'24px'}}>
+                    <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '1vh', marginBottom:0 }}>
+                        <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%', fontSize:'3vh'}}>
                             0
                         </div>
-                        <div className='inter' style={{ textAlign: 'right', marginRight:'5%' , fontSize:'24px'}}>
+                        <div className='inter' style={{ textAlign: 'right', marginRight:'5%' , fontSize:'3vh'}}>
                             0 TON
                         </div>
                     </Box>
@@ -124,15 +125,18 @@ const ProfilePage = React.forwardRef((props, ref) => {
                             CLAIM REFERRAL  REWARDS
                     </button>
                   </Box>
+                  <Box sx={{ position: 'absolute', bottom: 0, width: '100%', display: 'flex' }}>
+                  <img src={line}  alt="First Image" style={{ width: '100%', height:'2vh' }}/>
+                </Box>
                 </Box>
 
-                <Box sx={{ position: 'absolute', bottom: 0, width: '100%', display: 'flex', justifyContent: 'space-around' }}>
-                  <img src={line}  alt="First Image" style={{ width: '100%', height:'15px' }}/>
-                </Box>
+                
             </Box>
         </>
     );
 });
+
+
 
 export default ProfilePage;
 

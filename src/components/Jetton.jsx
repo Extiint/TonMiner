@@ -98,26 +98,24 @@ export function Jetton() {
 
       </Box>
 
-              <Box display="flex" alignItems="center" justifyContent="center" gap={2} sx={{ width: '100%', backgroundColor: '#30302F', padding: '10px 0', marginTop:'-7px' }}>
+              <Box display="flex" alignItems="center" justifyContent="center" gap={2} sx={{ width: '100%', backgroundColor: '#30302F', padding: '5px 0', marginTop:'-7px' }}>
               
-                  <Box component="img" className='idiamonds' src={diamond} alt="Descriptive Alt Text" sx={{ width: 70}} />
+                  <Box component="img" className='idiamonds' src={diamond} alt="Descriptive Alt Text" sx={{ width: 70, marginTop:"-15px"}} />
                   
-                  <div style={{position:'absolute', width:'100%', height:'2px', backgroundColor: '#080401', top:61}}>
-                    
-                  </div>
-                  <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'center' }}>
+                 
+                  <div className='inter4' sx={{ flexGrow: 1, textAlign: 'center', fontSize:'12px'}}>
                     PENDING TON: 0.152 
                   </div>
-                  <button variant="contained" className='claimb' style={{marginLeft:'0%'}} disabled={!sell} onClick={() => {sell}}>
+                  <button variant="contained" className='claimb' style={{marginLeft:'0%' , fontSize:'12px'}} disabled={!sell} onClick={() => {sell}}>
                     CLAIM
                   </button>
               </Box>
 
-              <Box display="flex" alignItems="center" justifyContent="space-around" gap={15} sx={{position:'absolute' ,zIndex:3, top:120,width: '100%', backgroundColor: '#080401', padding: '7px 0' }}>
-                  <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'left' }}>
+              <Box display="flex" alignItems="center" justifyContent="space-around" gap={10} sx={{position:'absolute' ,zIndex:3, top:120,width: '100%', backgroundColor: '#080401', padding: '7px 0' }}>
+                  <div variant="body2" className='inter4' sx={{ flexGrow: 1, textAlign: 'left', fontSize:'12px' }}>
                       CONTRACT BALANCE:
                   </div>
-                  <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'right' }}>
+                  <div variant="body2" className='inter4' sx={{ flexGrow: 1, textAlign: 'right', fontSize:'12px' }}>
                       0 TON
                   </div>
               </Box>

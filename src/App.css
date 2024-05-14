@@ -24,14 +24,21 @@ html, body {
 .inter {
   font-family: 'Inter', sans-serif;
   font-weight: 800;  /* Extra Bold */
-  font-size: 12px;
+  font-size: 2vh;
   color: white;
   text-shadow:  0 4px 8px rgba(0, 0, 0, 0.7);
 }
 .inter2 {
   font-family: 'Inter', sans-serif;
   font-weight: 800;  /* Extra Bold */
-  font-size: 2vh;
+  font-size: 1.5vh;
+  color: white;
+  text-shadow:  0 4px 8px rgba(0, 0, 0, 0.7);
+}
+.inter4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;  /* Extra Bold */
+  font-size: 13px;
   color: white;
   text-shadow:  0 4px 8px rgba(0, 0, 0, 0.7);
 }
@@ -50,7 +57,8 @@ html, body {
   transition: all 0.3s ease;  
   font-family: 'Inter', sans-serif;
   font-weight: 800;
-  font-size: 12px;
+  font-size:  1.5vh;
+  margin-bottom: 3vh;
   text-shadow:  0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
@@ -83,8 +91,25 @@ html, body {
   transition: all 0.3s ease;  
   font-family: 'Inter', sans-serif;
   font-weight: 800;
-  font-size: 12px;
+  font-size: 1.5vh;
   text-shadow:  0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.profilet {
+  background-color: #1D2358; 
+  color: #ffffff;    
+  border: 3px solid #0098EA; 
+  border-radius: 10px; 
+  padding: 10px 20px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;        
+  outline: none;           
+  transition: all 0.3s ease;  
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 1.5vh;
+  text-shadow:  0 4px 8px rgba(0, 0, 0, 0.4);
+  z-index: 10;
 }
 
 .claimb:hover {
