@@ -90,9 +90,9 @@ export function Jetton() {
                   </div>
               </Box>
 
-              <Box sx={{ position: 'relative', width: '100%',height:'100%', overflow: 'hidden' , marginTop:'-20px', padding: '0px 0'}}>
+              <Box sx={{ position: 'relative', width: '100%',height:'100%', overflow: 'hidden' , marginTop:'-20px'}}>
                 <Box component="img" src={backgroundImage} alt="Full Width Image" sx={{ width: '100%', height: '100%' }} />
-                <Box sx={{ position: 'absolute',zIndex:2, bottom: 120, width: '100%', display: 'flex', justifyContent: 'space-around' , backgroundColor: '#1B1B1B', padding: '15px 0px'}}>
+                <Box sx={{ position: 'absolute',zIndex:2, height:'14vh', bottom: "13vh", width: '100%', display: 'flex', justifyContent: 'space-around' , backgroundColor: '#1B1B1B', padding: '2vh 0px'}}>
                     <Box sx={{ textAlign: 'center' }}>
                       <img src={g1} className='image-style' alt="First Image" style={{ width: 'auto' }} disabled={!connected} onClick={buy}/>
                       <div className='inter2' style={{ marginTop: '5px', color: 'white' }}>UPGRADE<br />IN:</div>
@@ -117,11 +117,11 @@ export function Jetton() {
                   </Modal>
                 </Box>
 
-                <Box sx={{ position: 'absolute', bottom: 98, width: '100%', display: 'flex', justifyContent: 'space-around' }}>
-                  <img src={line}  alt="First Image" style={{ width: '100%' }}/>
+                <Box sx={{ position: 'absolute', bottom: '11.2vh', width: '100%', display: 'flex', justifyContent: 'space-around' }}>
+                  <img src={line}  alt="First Image" style={{ width: '100%' , height:'2.5vh',zIndex:6}}/>
                 </Box>
               
-                <Box gap={3} sx={{ position: 'absolute', bottom: 0, width: '100%', display: 'flex', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '20px 0px'}}>
+                <Box gap={3} sx={{ position: 'absolute', bottom: 0, width: '100%', height:'5vh', display: 'flex', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '4vh 0px'}}>
                   <img src={docs} className='image-style2' alt="First Image" style={{ width: 'auto' }} disabled={!connected} onClick={buy}/>
                   <img src={tg} className='image-style2' alt="Second Image" style={{ width: 'auto'}} />
                   <img src={x} className='image-style2' alt="Third Image" style={{ width: 'auto' }} />
