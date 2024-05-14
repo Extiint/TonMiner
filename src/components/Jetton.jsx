@@ -17,6 +17,8 @@ import x from '../media/icons/x.png'
 import fox from '../media/icons/fox.png'
 import ton from '../media/icons/ton.png'
 
+import ProfilePage from './subpages/ProfilePage';
+
 
 export function Jetton() {
   const { connected, wallet } = useTonConnect();
@@ -25,14 +27,13 @@ export function Jetton() {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const modalStyle = {
-    position: 'absolute',
-    top:70,
-    width: "100%",
-    height:'68%',
-    bgcolor: 'white',
-    border: 'none',
+  const imageStyle = {
+    outline: 'none', 
+    '&:focus': {
+        boxShadow: '0 0 0 2px rgba(255, 255, 255, 0.5)', 
+    }
 };
+
   const formatDate = (timestamp) => {
     const date = new Date(timestamp * 1000);
     return date.toLocaleString();
@@ -45,7 +46,7 @@ export function Jetton() {
       height: '100vh', 
       width: '100vw', 
       padding: 0, 
-      margin: 0 
+      margin: 0,borderWidth:0,borderColor:'none'
     }}>
       
       <Box display="flex" flexDirection="column" alignItems="center" gap={2} sx={{ flexGrow: 1, height: '100vh' }}>
@@ -93,9 +94,9 @@ export function Jetton() {
                     </Box>
 
                     <Box sx={{ textAlign: 'center' }}>
-                        <img src={fox} className='image-style' alt="Second Image" style={{ width: 'auto' }} onClick={handleOpen}/>
-                        <div className='inter2' style={{ marginTop: '5px', color: 'white' }}>PROFILE</div>
-                    </Box>
+                      <img src={fox} className='image-style' alt="Second Image" style={{ width: 'auto', ...imageStyle }} onClick={handleOpen}/>
+                      <div className='inter2' style={{ marginTop: '5px', color: 'white' }}>PROFILE</div>
+                  </Box>
 
                     <Box sx={{ textAlign: 'center' }}>
                         <img src={g2} className='image-style' alt="Third Image" style={{ width: 'auto' }} />
@@ -105,16 +106,9 @@ export function Jetton() {
                     <Modal
                       open={open}
                       onClose={handleClose}
-                      sx={{border:'none'}}
-                  >
-                      <Box sx={modalStyle}>
-                          <Typography >
-                              Profile Details
-                          </Typography>
-                          <Typography>
-                              Details about the user profile can be placed here.
-                          </Typography>
-                      </Box>
+                      sx={{borderWidth:0,borderColor:'none',margin:0}}
+                    >
+                      <ProfilePage />
                   </Modal>
                 </Box>
 
