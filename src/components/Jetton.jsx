@@ -67,7 +67,12 @@ export function Jetton() {
       </Box>
 
               <Box display="flex" alignItems="center" justifyContent="center" gap={2} sx={{ width: '100%', backgroundColor: '#30302F', padding: '10px 0', marginTop:'-7px' }}>
+              
                   <Box component="img" className='idiamonds' src={diamond} alt="Descriptive Alt Text" sx={{ width: 70}} />
+                  
+                  <div style={{position:'absolute', width:'100%', height:'2px', backgroundColor: '#080401', top:61}}>
+                    
+                  </div>
                   <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'center' }}>
                     PENDING TON: 0.152 
                   </div>

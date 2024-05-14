@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import backgroundProfile from '../../media/bg/bgprofile.png'
+import ProfileFox from '../../media/bg/profileFox.png'
+
 import line from '../../media/bg/line.png'
 
 const ProfilePage = React.forwardRef((props, ref) => {
@@ -52,12 +54,82 @@ const ProfilePage = React.forwardRef((props, ref) => {
               </Box>
               <Box component="img" src={backgroundProfile} alt="Full Width Image" sx={{ width: '100%', height: '80%' }} />
 
-             
+              <Box  sx={{ position: 'absolute', top: 80, width: '60%', justifyContent: 'center', padding: '20px 0px'}}>
+                <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '7px 0', marginBottom:2  }}>
+                        <div className='inter'>
+                            USE A COUPON
+                        </div>
+                        <div style={{ textAlign: 'right', marginRight:'5%', fontSize:'11px' }}>
+                        <input
+                            type="text"
+                            placeholder="INPUT CODE"
+                            className="profileb"  
+                            style={{maxWidth:'90px'}}
+                        />
+                        </div>
+                        <div className='inter' style={{fontSize:'9px'}}>
+                            GET 2% CASHBACK
+                        </div>
+                    </Box>
 
-              <Box gap={3} sx={{ position: 'absolute', bottom: 15, width: '100%', display: 'flex', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '20px 0px'}}>
-              <button variant="contained" className='claimb' style={{marginLeft:'0%'}} >
-                    CLAIM
-                  </button>
+                    <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '7px 0', marginBottom:2  }}>
+                        <div className='inter' style={{fontSize:'14px'}}>
+                        BUY HASH POWER
+                        </div>
+                        <div style={{ textAlign: 'right', marginRight:'5%', fontSize:'11px' }}>
+                        <input
+                            type="text"
+                            placeholder="TON AMOUNT"
+                            className="profileb"  
+                            style={{maxWidth:'94px'}}
+                        />
+                        </div>
+                        <div className='inter' style={{fontSize:'10px'}}>
+                            MINIMUM 10 TON
+                        </div>
+                        <button variant="contained" className='claimb' style={{marginLeft:'0%'}} >
+                            INVEST
+                    </button>
+                    </Box>
+
+                </Box>
+
+                <Box sx={{ position: 'absolute', bottom: 250, width: '100%', display: 'flex', justifyContent: 'right' }}>
+                  <img src={ProfileFox}  alt="First Image" style={{ width: '60%',maxWidth:'200px', right:10 }}/>
+                </Box>
+
+              <Box gap={3} sx={{ position: 'absolute', bottom: 15, width: '100%', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '20px 0px'}}>
+                <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '7px 0', marginBottom:2  }}>
+                        <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%'}}>
+                            YOUR PROMO CODE
+                        </div>
+                        <div style={{ textAlign: 'right', marginRight:'5%' }}>
+                            <button variant="contained" className='profileb' style={{marginLeft:'0%'}} >
+                                    DASH_?????
+                            </button>
+                        </div>
+                    </Box>
+                    <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '7px 0' }}>
+                        <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%'}}>
+                            TOT REFERRALS
+                        </div>
+                        <div className='inter' style={{ textAlign: 'right', marginRight:'5%' }}>
+                            REWARDS
+                        </div>
+                    </Box>
+                    <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '7px 0', marginBottom:2 }}>
+                        <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%', fontSize:'24px'}}>
+                            0
+                        </div>
+                        <div className='inter' style={{ textAlign: 'right', marginRight:'5%' , fontSize:'24px'}}>
+                            0 TON
+                        </div>
+                    </Box>
+                    <Box display="flex" alignItems="center" justifyContent="center">
+                        <button variant="contained" className='claimb' style={{marginLeft:'0%'}} >
+                            CLAIM REFERRAL  REWARDS
+                    </button>
+                  </Box>
                 </Box>
 
                 <Box sx={{ position: 'absolute', bottom: 0, width: '100%', display: 'flex', justifyContent: 'space-around' }}>

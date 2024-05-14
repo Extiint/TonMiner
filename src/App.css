@@ -71,6 +71,22 @@ html, body {
   margin-top: 10px;
 }
 
+.profileb {
+  background-color: #1D2358; 
+  color: #ffffff;    
+  border: 3px solid #0098EA; 
+  border-radius: 10px; 
+  padding: 10px 20px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;        
+  outline: none;           
+  transition: all 0.3s ease;  
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  text-shadow:  0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
 .claimb:hover {
   background-color: #007acc;  /* Slightly darker blue on hover */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
@@ -108,7 +124,7 @@ html, body {
     transform: scale(1); /* Original size */
   }
   50% {
-    transform: scale(1.02); /* Scale up to 105% of the original size */
+    transform: scale(1.05); /* Scale up to 105% of the original size */
   }
 }
 @keyframes shine {
@@ -116,7 +132,7 @@ html, body {
     filter: brightness(1) contrast(1); /* Normal state */
   }
   50% {
-    filter: brightness(1.4) contrast(1.1); /* Brighter and more contrast in the middle of the animation */
+    filter: brightness(1.1) contrast(1.1); /* Brighter and more contrast in the middle of the animation */
   }
 }
 
