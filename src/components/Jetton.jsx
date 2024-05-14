@@ -98,15 +98,15 @@ export function Jetton() {
 
       </Box>
 
-              <Box display="flex" alignItems="center" justifyContent="center" gap={2} sx={{ width: '100%', backgroundColor: '#30302F', padding: '5px 0', marginTop:'-7px' }}>
+              <Box display="flex" alignItems="center" justifyContent="center" sx={{ width: '100%', backgroundColor: '#30302F', padding: '1px 0', marginTop:'-7px' }}>
               
-                  <Box component="img" className='idiamonds' src={diamond} alt="Descriptive Alt Text" sx={{ width: 70, marginTop:"-15px"}} />
+                  <Box component="img" className='idiamonds' src={diamond} alt="Descriptive Alt Text" sx={{ marginLeft:'7px', width: 70, marginTop:"-10px"}} />
                   
                  
-                  <div className='inter4' sx={{ flexGrow: 1, textAlign: 'center', fontSize:'12px'}}>
+                  <div className='inter4' style={{ flexGrow: 1, textAlign: 'center', fontSize:'12px', }}>
                     PENDING TON: 0.152 
                   </div>
-                  <button variant="contained" className='claimb' style={{marginLeft:'0%' , fontSize:'12px'}} disabled={!sell} onClick={() => {sell}}>
+                  <button variant="contained" className='claimb' style={{marginRight:'10px' , fontSize:'12px',marginTop:"10px"}} disabled={!sell} onClick={() => {sell}}>
                     CLAIM
                   </button>
               </Box>
@@ -115,7 +115,7 @@ export function Jetton() {
                   <div variant="body2" className='inter4' sx={{ flexGrow: 1, textAlign: 'left', fontSize:'12px' }}>
                       CONTRACT BALANCE:
                   </div>
-                  <div variant="body2" className='inter4' sx={{ flexGrow: 1, textAlign: 'right', fontSize:'12px' }}>
+                  <div variant="body2" className='inter4' sx={{ flexGrow: 1, textAlign: 'right', fontSize:'12px',right:5 }}>
                       0 TON
                   </div>
               </Box>
@@ -143,7 +143,7 @@ export function Jetton() {
                       onClose={handleClose}
                       sx={{borderWidth:0,borderColor:'none',margin:0}}
                     >
-                      <ProfilePage />
+                      <ProfilePage handleClose={handleClose}/>
                   </Modal>
                 </Box>
 
