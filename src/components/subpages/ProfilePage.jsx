@@ -36,6 +36,14 @@ const ProfilePage = React.forwardRef((props, ref) => {
                         PROFILE
                     </div>
                 </Box>
+                <Box display="flex" alignItems="center" justifyContent="space-around" gap={15} sx={{position:'absolute' ,zIndex:5, top:30,width: '100%', backgroundColor: '#080401', padding: '7px 0' }}>
+                  <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'left' }}>
+                      CONTRACT BALANCE:
+                  </div>
+                  <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'right' }}>
+                      0 TON
+                  </div>
+              </Box>
                 <Typography variant="h6">
                     Profile Details
                 </Typography>
