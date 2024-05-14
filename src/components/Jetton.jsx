@@ -1,8 +1,9 @@
 import React from 'react';
+import { useState } from 'react';
 import { Address } from "ton-core";
 import { useJettonContract } from "../hooks/useJettonContract";
 import { useTonConnect } from "../hooks/useTonConnect";
-import { Container, Card, CardContent, Typography, Box, Button, CircularProgress } from '@mui/material';
+import { Container, Card, CardContent, Typography, Box, Button, Modal } from '@mui/material';
 import { TonConnectButton } from '@tonconnect/ui-react';
 import diamond from '../media/icons/diamante.png'
 import backgroundImage from '../media/bg/bgdiamond.png'
@@ -20,7 +21,18 @@ import ton from '../media/icons/ton.png'
 export function Jetton() {
   const { connected, wallet } = useTonConnect();
   const { balance, miner, lasthatch, rewards, buy, sell } = useJettonContract();
+  const [open, setOpen] = useState(false);
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const modalStyle = {
+    position: 'absolute',
+    top:70,
+    width: "100%",
+    height:'68%',
+    bgcolor: 'white',
+    border: 'none',
+};
   const formatDate = (timestamp) => {
     const date = new Date(timestamp * 1000);
     return date.toLocaleString();
@@ -63,16 +75,25 @@ export function Jetton() {
                   </button>
               </Box>
 
+              <Box display="flex" alignItems="center" justifyContent="space-around" gap={15} sx={{position:'absolute' ,zIndex:3, top:120,width: '100%', backgroundColor: '#080401', padding: '7px 0' }}>
+                  <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'left' }}>
+                      CONTRACT BALANCE:
+                  </div>
+                  <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'right' }}>
+                      0 TON
+                  </div>
+              </Box>
+
               <Box sx={{ position: 'relative', width: '100%',height:'100%', overflow: 'hidden' , marginTop:'-20px', padding: '0px 0'}}>
                 <Box component="img" src={backgroundImage} alt="Full Width Image" sx={{ width: '100%', height: '100%' }} />
-                <Box sx={{ position: 'absolute',zIndex:2, bottom: 140, width: '100%', display: 'flex', justifyContent: 'space-around' , backgroundColor: '#1B1B1B', padding: '20px 0px'}}>
+                <Box sx={{ position: 'absolute',zIndex:2, bottom: 120, width: '100%', display: 'flex', justifyContent: 'space-around' , backgroundColor: '#1B1B1B', padding: '15px 0px'}}>
                     <Box sx={{ textAlign: 'center' }}>
                       <img src={g1} className='image-style' alt="First Image" style={{ width: 'auto' }} disabled={!connected} onClick={buy}/>
                       <div className='inter2' style={{ marginTop: '5px', color: 'white' }}>UPGRADE<br />IN:</div>
                     </Box>
 
                     <Box sx={{ textAlign: 'center' }}>
-                        <img src={fox} className='image-style' alt="Second Image" style={{ width: 'auto' }} />
+                        <img src={fox} className='image-style' alt="Second Image" style={{ width: 'auto' }} onClick={handleOpen}/>
                         <div className='inter2' style={{ marginTop: '5px', color: 'white' }}>PROFILE</div>
                     </Box>
 
@@ -80,13 +101,28 @@ export function Jetton() {
                         <img src={g2} className='image-style' alt="Third Image" style={{ width: 'auto' }} />
                         <div className='inter2' style={{ marginTop: '5px', color: 'white' }}>REINVEST</div>
                     </Box>
+
+                    <Modal
+                      open={open}
+                      onClose={handleClose}
+                      sx={{border:'none'}}
+                  >
+                      <Box sx={modalStyle}>
+                          <Typography >
+                              Profile Details
+                          </Typography>
+                          <Typography>
+                              Details about the user profile can be placed here.
+                          </Typography>
+                      </Box>
+                  </Modal>
                 </Box>
 
-                <Box sx={{ position: 'absolute', bottom: 90, width: '100%', display: 'flex', justifyContent: 'space-around' , backgroundColor: '#1B1B1B', padding: '30px 0px'}}>
+                <Box sx={{ position: 'absolute', bottom: 98, width: '100%', display: 'flex', justifyContent: 'space-around' }}>
                   <img src={line}  alt="First Image" style={{ width: '100%' }}/>
                 </Box>
               
-                <Box gap={3} sx={{ position: 'absolute', bottom: 0, width: '100%', display: 'flex', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '30px 0px'}}>
+                <Box gap={3} sx={{ position: 'absolute', bottom: 0, width: '100%', display: 'flex', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '20px 0px'}}>
                   <img src={docs} className='image-style2' alt="First Image" style={{ width: 'auto' }} disabled={!connected} onClick={buy}/>
                   <img src={tg} className='image-style2' alt="Second Image" style={{ width: 'auto'}} />
                   <img src={x} className='image-style2' alt="Third Image" style={{ width: 'auto' }} />
