@@ -24,14 +24,14 @@ html, body {
 .inter {
   font-family: 'Inter', sans-serif;
   font-weight: 800;  /* Extra Bold */
-  font-size: 2vh;
+  font-size: 11px;
   color: white;
   text-shadow:  0 4px 8px rgba(0, 0, 0, 0.7);
 }
 .inter2 {
   font-family: 'Inter', sans-serif;
   font-weight: 800;  /* Extra Bold */
-  font-size: 1.5vh;
+  font-size: 11px;
   color: white;
   text-shadow:  0 4px 8px rgba(0, 0, 0, 0.7);
 }
@@ -57,7 +57,7 @@ html, body {
   transition: all 0.3s ease;  
   font-family: 'Inter', sans-serif;
   font-weight: 800;
-  font-size:  1.5vh;
+  font-size:  11px;
   margin-bottom: 3vh;
   text-shadow:  0 4px 8px rgba(0, 0, 0, 0.4);
 }
@@ -91,7 +91,7 @@ html, body {
   transition: all 0.3s ease;  
   font-family: 'Inter', sans-serif;
   font-weight: 800;
-  font-size: 1.5vh;
+  font-size: 10px;
   text-shadow:  0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
@@ -107,7 +107,7 @@ html, body {
   transition: all 0.3s ease;  
   font-family: 'Inter', sans-serif;
   font-weight: 800;
-  font-size: 1.5vh;
+  font-size: 10px;
   text-shadow:  0 4px 8px rgba(0, 0, 0, 0.4);
   z-index: 10;
 }

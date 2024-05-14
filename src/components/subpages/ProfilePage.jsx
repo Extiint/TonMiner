@@ -33,7 +33,7 @@ const ProfilePage = React.forwardRef(({ handleClose }, ref) => {
     return (
         <>
             <Box sx={modalStyle} ref={ref} src={backgroundProfile} >
-                <Box display="flex" alignItems="center" justifyContent="center" gap={2} sx={{ top: 10, width: '100%', backgroundColor: '#30302F', padding: '20px 0', marginTop: '-7px' }}>
+                <Box display="flex" alignItems="center" justifyContent="center" gap={2} sx={{ zIndex:5, top: 10, width: '100%', backgroundColor: '#30302F', padding: '20px 0', marginTop: '-7px' }}>
                     <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'center' }}>
                         PROFILE
                     </div>
@@ -90,12 +90,12 @@ const ProfilePage = React.forwardRef(({ handleClose }, ref) => {
 
                 </Box>
 
-                <Box sx={{ position: 'absolute', bottom: '27vh', width: '40%', display: 'flex', justifyContent: 'right' , right:20}}>
-                  <img src={ProfileFox}  alt="First Image" style={{ width: '25vh'}}/>
+                <Box sx={{ position: 'absolute', bottom: 150, width: '40%', display: 'flex', justifyContent: 'right' , right:20}}>
+                  <img src={ProfileFox}  alt="First Image" style={{ width: '180px'}}/>
                 </Box>
   
 
-              <Box  sx={{ position: 'relative', bottom: 110, width: '100%', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '0.5vh 0px'}}>
+              <Box  sx={{ position: 'fixed', bottom: 0, width: '100%', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '3px 0px'}}>
                 <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '5px 0', marginBottom:1  }}>
                         <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%'}}>
                             YOUR PROMO CODE
@@ -115,10 +115,10 @@ const ProfilePage = React.forwardRef(({ handleClose }, ref) => {
                         </div>
                     </Box>
                     <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '1vh', marginBottom:0 }}>
-                        <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%', fontSize:'3vh'}}>
+                        <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%'}}>
                             0
                         </div>
-                        <div className='inter' style={{ textAlign: 'right', marginRight:'5%' , fontSize:'3vh'}}>
+                        <div className='inter' style={{ textAlign: 'right', marginRight:'5%' }}>
                             0 TON
                         </div>
                     </Box>
@@ -127,9 +127,9 @@ const ProfilePage = React.forwardRef(({ handleClose }, ref) => {
                             CLAIM REFERRAL  REWARDS
                     </button>
                   </Box>
-                  <Box sx={{ position: 'absolute', bottom: 0, width: '100%', display: 'flex' }}>
-                  <img src={line}  alt="First Image" style={{ width: '100%', height:'3vh' }}/>
-                </Box>
+                    <Box sx={{ position: 'absolute', bottom: -3, width: '100%', display: 'flex' }}>
+                        <img src={line}  alt="First Image" style={{ width: '100%', height:15 }}/>
+                    </Box>
                 </Box>
 
                 
