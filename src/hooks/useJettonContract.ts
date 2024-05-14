@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Address, fromNano, OpenedContract, toNano } from "ton-core";
-import {Test , BuyMiners, SellEggs} from "../../build/Test/tact_Test";
+import {DiamonDash , BuyPickAxe } from "../../build/DiamondDash/tact_DiamonDash";
 import { useAsyncInitialize } from "./useAsyncInitialize";
 import { useTonClient } from "./useTonClient";
 import { useTonConnect } from "./useTonConnect";
@@ -22,9 +22,9 @@ export function useJettonContract() {
         const refCodeFromURL = queryParams.get('refCode') || null;
         setRefCode(refCodeFromURL);
         console.log(refCodeFromURL,"here")
-        const contract = Test.fromAddress(Address.parse("EQDqFF0X1sAZYsg4rJ4u7ENrb_7nwQCbv4GOUtFnSib58S7_"))
+        const contract = DiamonDash.fromAddress(Address.parse("EQAeRDReVfFAbqu-Nm-hfy1iAis8dheHuMmyHrXfrXmszWwu"))
 
-        return client.open(contract) as OpenedContract<Test>
+        return client.open(contract) as OpenedContract<DiamonDash>
     }, [client, wallet])
 
 
@@ -49,12 +49,12 @@ export function useJettonContract() {
                   
                     console.log("reached")
                     const [fetchedMiner, lastHatch, myeggs] = await Promise.all([
-                        jettonContract.getHatcheryMiners(address),
-                        jettonContract.getLastHatch(address),
-                        jettonContract.getGetMyEggs(address),
+                        jettonContract.getLastCheck(address),
+                        jettonContract.getLastCheck(address),
+                        jettonContract.getLastCheck(address),
                     ]);
                     
-                    const rewards = await jettonContract.getCalculateEggSell(myeggs);
+                    const rewards = await jettonContract.getLastCheck(address);
                     //const ww = await jettonContract.hatchEggs();
                     isSync = false;
                     setlastHatch(Number(lastHatch));
@@ -80,9 +80,10 @@ export function useJettonContract() {
         miner,
         lasthatch,
         rewards,
-        buy: () => {
-            const message: BuyMiners = {
-                $$type: "BuyMiners",
+        buy: (number: bigint) => {
+            const message: BuyPickAxe = {
+                $$type: "BuyPickAxe",
+                ref: number
             }
 
             jettonContract?.send(sender, {
@@ -90,13 +91,9 @@ export function useJettonContract() {
             }, message)
         },
         sell: () => {
-            const message: SellEggs = {
-                $$type: "SellEggs",
-            }
-
             jettonContract?.send(sender, {
                 value: toNano("0.05")
-            }, message)
+            }, "Withdraw")
         }
     }
 }

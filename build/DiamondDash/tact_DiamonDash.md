@@ -1,9 +1,9 @@
 # TACT Compilation Report
-Contract: Test
-BOC Size: 1942 bytes
+Contract: DiamonDash
+BOC Size: 2473 bytes
 
 # Types
-Total Types: 12
+Total Types: 11
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -37,59 +37,32 @@ Signature: `ChangeOwner{queryId:uint64,newOwner:address}`
 TLB: `change_owner_ok#327b2b4a queryId:uint64 newOwner:address = ChangeOwnerOk`
 Signature: `ChangeOwnerOk{queryId:uint64,newOwner:address}`
 
-## Add
-TLB: `add#3a090939  = Add`
-Signature: `Add{}`
+## BuyPickAxe
+TLB: `buy_pick_axe#ebf7e107 ref:uint32 = BuyPickAxe`
+Signature: `BuyPickAxe{ref:uint32}`
 
-## BuyMiners
-TLB: `buy_miners#c2e3d2d5  = BuyMiners`
-Signature: `BuyMiners{}`
-
-## SellEggs
-TLB: `sell_eggs#3a5b6e1b  = SellEggs`
-Signature: `SellEggs{}`
+## NewBuy
+TLB: `new_buy#6dc9f7f0 amount:uint256 sender:address = NewBuy`
+Signature: `NewBuy{amount:uint256,sender:address}`
 
 ## User
-TLB: `_ lastHatch:uint32 hatcheryMiners:uint256 claimedEggs:uint256 = User`
-Signature: `User{lastHatch:uint32,hatcheryMiners:uint256,claimedEggs:uint256}`
+TLB: `_ deposit:uint256 prom_code:uint32 lastCheck:uint32 upCheck:uint32 level:uint32 roi:uint32 penalty:bool = User`
+Signature: `User{deposit:uint256,prom_code:uint32,lastCheck:uint32,upCheck:uint32,level:uint32,roi:uint32,penalty:bool}`
 
 # Get Methods
-Total Get Methods: 12
+Total Get Methods: 6
 
-## calculateEggBuy
-Argument: ton
-Argument: contractbalance
-
-## calculateEggSell
-Argument: eggs
-
-## calculateTrade
-Argument: rt
-Argument: rs
-Argument: bs
-
-## getMyEggs
+## getRewards
 Argument: address
-
-## getEggsSinceLastHatch
-Argument: address
-Argument: myUser
 
 ## balanceOff
 Argument: address
 
-## lastHatch
+## promoCode
 Argument: address
 
-## hatcheryMiners
+## lastCheck
 Argument: address
-
-## claimedEggs
-Argument: address
-
-## min
-Argument: a
-Argument: b
 
 ## mybalance
 
@@ -121,3 +94,7 @@ Argument: b
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 3935: too little sent
+9760: 24 hours needs to pass
+16798: cost is 1 ton
+41626: Not started yet
+46399: only owner can call this
