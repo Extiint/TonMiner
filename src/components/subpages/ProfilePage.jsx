@@ -54,8 +54,8 @@ const ProfilePage = React.forwardRef((props, ref) => {
               </Box>
               <Box component="img" src={backgroundProfile} alt="Full Width Image" sx={{ width: '100%', height: '80%' }} />
 
-              <Box  sx={{ position: 'absolute', top: 80, width: '60%', justifyContent: 'center', padding: '20px 0px'}}>
-                <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '7px 0', marginBottom:2  }}>
+              <Box  sx={{ position: 'absolute', top: 70, width: '60%', justifyContent: 'center', padding: '20px 0px'}}>
+                <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '7px 0', marginBottom:1  }}>
                         <div className='inter'>
                             USE A COUPON
                         </div>
@@ -72,7 +72,7 @@ const ProfilePage = React.forwardRef((props, ref) => {
                         </div>
                     </Box>
 
-                    <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '7px 0', marginBottom:2  }}>
+                    <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '7px 0', marginBottom:1  }}>
                         <div className='inter' style={{fontSize:'14px'}}>
                         BUY HASH POWER
                         </div>
@@ -94,12 +94,12 @@ const ProfilePage = React.forwardRef((props, ref) => {
 
                 </Box>
 
-                <Box sx={{ position: 'absolute', bottom: 250, width: '100%', display: 'flex', justifyContent: 'right' }}>
-                  <img src={ProfileFox}  alt="First Image" style={{ width: '60%',maxWidth:'200px', right:10 }}/>
+                <Box sx={{ position: 'absolute', bottom: 200, width: '100%', display: 'flex', justifyContent: 'right' , right:20}}>
+                  <img src={ProfileFox}  alt="First Image" style={{ width: '60%',maxWidth:'180px' }}/>
                 </Box>
 
-              <Box gap={3} sx={{ position: 'absolute', bottom: 15, width: '100%', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '20px 0px'}}>
-                <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '7px 0', marginBottom:2  }}>
+              <Box  sx={{ position: 'absolute', bottom: 15, width: '100%', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '5px 0px'}}>
+                <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '5px 0', marginBottom:1  }}>
                         <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%'}}>
                             YOUR PROMO CODE
                         </div>
@@ -109,7 +109,7 @@ const ProfilePage = React.forwardRef((props, ref) => {
                             </button>
                         </div>
                     </Box>
-                    <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '7px 0' }}>
+                    <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '5px 0' }}>
                         <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%'}}>
                             TOT REFERRALS
                         </div>
@@ -117,7 +117,7 @@ const ProfilePage = React.forwardRef((props, ref) => {
                             REWARDS
                         </div>
                     </Box>
-                    <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '7px 0', marginBottom:2 }}>
+                    <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', padding: '7px 0', marginBottom:1 }}>
                         <div className='inter' style={{ textAlign: 'left' ,marginLeft:'5%', fontSize:'24px'}}>
                             0
                         </div>

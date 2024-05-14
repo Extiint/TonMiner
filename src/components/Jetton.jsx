@@ -23,7 +23,7 @@ import ProfilePage from './subpages/ProfilePage';
 export function Jetton() {
   const { connected, wallet } = useTonConnect();
   const { balance, miner, lasthatch, rewards, buy, sell } = useJettonContract();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
