@@ -32,7 +32,6 @@ const ProfilePage = React.forwardRef((props, ref) => {
 
     return (
         <>
-
             <Box sx={modalStyle} ref={ref} src={backgroundProfile}>
                 <Box display="flex" alignItems="center" justifyContent="center" gap={2} sx={{ top: 10, width: '100%', backgroundColor: '#30302F', padding: '20px 0', marginTop: '-7px' }}>
                     <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'center' }}>
