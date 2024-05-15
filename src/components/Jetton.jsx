@@ -37,8 +37,6 @@ export function Jetton() {
   }, [userbalance]);
 
 
-  console.log(tokenPrice,"here balance")
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -70,8 +68,8 @@ export function Jetton() {
     }
 };
 
-if (!wallet || !mediaLoaded) {
-  return <Loading />;
+if (!wallet || !mediaLoaded || !userbalance) {
+  return <Loading balance={userbalance} wallet={wallet}/>;
 }
 
   return (

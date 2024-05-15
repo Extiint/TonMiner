@@ -163,3 +163,23 @@ html, body {
 }
 
 
+
+/* App.css */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotating {
+  z-index: 100;
+  top:40%;
+  width: 100px; /* Adjust size as needed */
+  height: 100px; /* Adjust size as needed */
+  animation: rotate 2s linear infinite;
+}
+
+

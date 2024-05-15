@@ -19,8 +19,6 @@ export function useJettonContract() {
     let isSync = false;
 
     const jettonContract = useAsyncInitialize(async()=>{
-        console.log(wallet,"wallet")
-
         if(!client || !wallet) return;
         const queryParams = new URLSearchParams(window.location.search);
         const refCodeFromURL = queryParams.get('refCode') || null;
