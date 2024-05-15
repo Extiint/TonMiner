@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Address } from "ton-core";
 import { useJettonContract } from "../hooks/useJettonContract";
 import { useTonConnect } from "../hooks/useTonConnect";
 import { Container, Card, CardContent, Typography, Box, Button, Modal } from '@mui/material';
 import { TonConnectButton } from '@tonconnect/ui-react';
+import { getTokenPrice } from '../hooks/utils/gecko';
 import diamond from '../media/icons/diamante.png'
 import backgroundImage from '../media/bg/bgdiamond.png'
 import line from '../media/bg/line.png'
@@ -20,16 +20,37 @@ import character from '../media/fox.gif'
 import backmusic from '../media/backmusic.mp3'
 
 import ProfilePage from './subpages/ProfilePage';
+import UpgradePage from './subpages/UpgradePage';
 import soundon from '../media/icons/soundon.png'
-import soundoff from '../media/icons/soundoff.png'
+import soundoff from '../media/icons/soundoff.png';
+import { Loading } from './subpages/Loading';
 
 export function Jetton() {
   const { connected, wallet } = useTonConnect();
-  const { balance, miner, lasthatch, rewards, buy, sell } = useJettonContract();
+  const { balance,userbalance , miner, lasthatch, rewards, buy, sell } = useJettonContract();
   const [open, setOpen] = useState(false);
+  const [tokenPrice, setTokenPrice] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+
+  useEffect(() => {
+    getTokenPrice()
+      .then(data => {
+        if(userbalance > 0){
+          setTokenPrice(data); 
+        }
+      });
+  }, [userbalance]);
+
+
+  console.log(tokenPrice,"here balance")
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [openUpgrade, setopenUpgrade] = useState(false);
+  const handleOpenUpgrade = () => setopenUpgrade(true);
+  const handleCloseUpgrade = () => setopenUpgrade(false);
 
   const [isPlaying, setIsPlaying] = useState(false);  // State to manage playback
   const audioRef = useRef(null);
@@ -38,12 +59,15 @@ export function Jetton() {
   };
 
   useEffect(() => {
-    if (isPlaying) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+      }
     }
   }, [isPlaying]);
+  
 
   const imageStyle = {
     outline: 'none', 
@@ -52,6 +76,9 @@ export function Jetton() {
     }
 };
 
+if (!wallet) {
+  return <Loading />;
+}
 
   return (
     <Container maxWidth={false} sx={{
@@ -77,7 +104,8 @@ export function Jetton() {
             marginRight: '2%' 
         }} disabled={!sell} onClick={() => {sell}}>
             <img src={ton} alt={ton} style={{ width: '30px',marginLeft:'0px' }} /> 
-            <div style={{ width: '30px',marginRight:'-5px',marginLeft:'25px' ,fontSize:'12px'}}>0 <br />~0$</div>
+            <div style={{ width: '30px',marginRight:'-5px',marginLeft:'25px' ,fontSize:'12px', textAlign:'right'}}>{userbalance.toFixed(2)} <br />
+            {userbalance > 0 && tokenPrice ? (userbalance * tokenPrice).toFixed(0): 0}$</div>
         </button>
 
         <img 
@@ -124,8 +152,8 @@ export function Jetton() {
                 <Box component="img" src={backgroundImage} alt="Full Width Image" sx={{ width: '100%', height: '100%' }} />
                 <Box sx={{ position: 'absolute',zIndex:2, height:'14vh', bottom: "13vh", width: '100%', display: 'flex', justifyContent: 'space-around' , backgroundColor: '#1B1B1B', padding: '2vh 0px'}}>
                     <Box sx={{ textAlign: 'center' }}>
-                      <img src={g1} className='image-style' alt="First Image" style={{ width: 'auto' }} disabled={!connected} onClick={buy}/>
-                      <div className='inter2' style={{ marginTop: '5px', color: 'white' }}>UPGRADE<br />IN:</div>
+                      <img src={g1} className='image-style' alt="First Image" style={{ width: 'auto' }} disabled={!connected} onClick={handleOpenUpgrade}/>
+                      <div className='inter2' style={{ marginTop: '5px', color: 'white' }}>UPGRADE</div>
                     </Box>
 
                     <Box sx={{ textAlign: 'center' }}>
@@ -144,6 +172,13 @@ export function Jetton() {
                       sx={{borderWidth:0,borderColor:'none',margin:0}}
                     >
                       <ProfilePage handleClose={handleClose}/>
+                  </Modal>
+                  <Modal
+                      open={openUpgrade}
+                      onClose={handleCloseUpgrade}
+                      sx={{borderWidth:0,borderColor:'none',margin:0}}
+                    >
+                      <UpgradePage handleClose={handleCloseUpgrade}/>
                   </Modal>
                 </Box>
 

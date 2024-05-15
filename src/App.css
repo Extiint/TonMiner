@@ -8,6 +8,7 @@ html, body {
   background-color: #343D3F;
   font-family: 'Inter', sans-serif;
   font-weight: 800;  /* Extra Bold */
+  -webkit-tap-highlight-color: transparent; 
 }
 
 .full-screen {

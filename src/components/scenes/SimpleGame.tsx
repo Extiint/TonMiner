@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import Phaser from 'phaser';
-import LoadingScene from './scenes/LoadingScene';
-import MenuScene from './scenes/MenuScene'; // Make sure to import the MenuScene
-import { useTonConnect } from '../hooks/useTonConnect';
-import { useJettonContract } from '../hooks/useJettonContract';
+import LoadingScene from './LoadingScene';
+import MenuScene from './MenuScene'; // Make sure to import the MenuScene
+import { useTonConnect } from '../../hooks/useTonConnect';
+import { useJettonContract } from '../../hooks/useJettonContract';
 
 interface IMenuScene extends Phaser.Scene {
   updateData(data: { balance: number; miner: number; rewards: number , refCode: string | null }): void;

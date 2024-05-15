@@ -9,6 +9,8 @@ export function useJettonContract() {
     const {client} = useTonClient();
     const {wallet, sender} = useTonConnect();
     const [balance, setBalance] = useState(0);
+    const [userbalance, setUserbalance] = useState(0);
+
     const [miner, setMiner] = useState(0);
     const [lasthatch, setlastHatch] = useState(0);
     const [rewards, setrewards] = useState(0);
@@ -17,14 +19,16 @@ export function useJettonContract() {
     let isSync = false;
 
     const jettonContract = useAsyncInitialize(async()=>{
+        console.log(wallet,"wallet")
+
         if(!client || !wallet) return;
         const queryParams = new URLSearchParams(window.location.search);
         const refCodeFromURL = queryParams.get('refCode') || null;
         setRefCode(refCodeFromURL);
-        console.log(refCodeFromURL,"here")
         const contract = DiamonDash.fromAddress(Address.parse("EQAeRDReVfFAbqu-Nm-hfy1iAis8dheHuMmyHrXfrXmszWwu"))
 
         return client.open(contract) as OpenedContract<DiamonDash>
+
     }, [client, wallet])
 
 
@@ -40,8 +44,8 @@ export function useJettonContract() {
 
                 const fetchedBalance = await jettonContract.getMybalance();
                 const latestBlock = (await client.getLastBlock()).last.seqno;
-                const balance = await client.getAccount(latestBlock,address)
-                console.log(balance,"balance")
+                const balance = await client.getAccount(latestBlock,address);
+                setUserbalance(Number(fromNano(balance.account.balance.coins)));
                 const balanceInNano = fromNano(fetchedBalance);
                 setBalance(Number(balanceInNano));
 
@@ -77,6 +81,7 @@ export function useJettonContract() {
     return {
         refCode,
         balance,
+        userbalance,
         miner,
         lasthatch,
         rewards,

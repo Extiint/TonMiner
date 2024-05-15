@@ -91,7 +91,7 @@ const ProfilePage = React.forwardRef(({ handleClose }, ref) => {
                 </Box>
 
                 <Box sx={{ position: 'absolute', bottom: 150, width: '40%', display: 'flex', justifyContent: 'right' , right:20}}>
-                  <img src={ProfileFox}  alt="First Image" style={{ width: '180px'}}/>
+                  <img src={ProfileFox}  alt="First Image" style={{ width: '30vh'}}/>
                 </Box>
   
 
