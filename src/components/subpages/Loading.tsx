@@ -8,9 +8,11 @@ import banner from '../../media/banner.jpg'
 interface LoadingProps {
     balance: number | null;
     wallet: string | null;
+    mediaLoaded: boolean;
+    onSkip: () => void;
   }
 
-export function Loading({ balance , wallet}: LoadingProps)  {
+export function Loading({ balance , wallet, mediaLoaded, onSkip}: LoadingProps)  {
 
     const [message, setmessage] = useState('CONNECT YOUR WALLET');
     const [showMessage, setShowMessage] = useState(false);
@@ -25,9 +27,9 @@ export function Loading({ balance , wallet}: LoadingProps)  {
       useEffect(() => {
         const timer = setTimeout(() => {
             setShowMessage(true);
-        }, 1000);
+        }, 200);
         return () => clearTimeout(timer);
-      }, []);
+      }, [balance,wallet]);
 
   return (
         <Container sx={{
@@ -41,17 +43,24 @@ export function Loading({ balance , wallet}: LoadingProps)  {
               <TonConnectButton style={{zIndex:10, marginTop:'8px', fontSize:'10px',position:'absolute' }}/>
                     <Box display="flex" flexDirection="column" alignItems="center" gap={2} sx={{position:'absolute', flexGrow: 1, height: '100vh',top:"40%" ,zIndex:1}}>
                         <img src={fox} alt="Rotating Fox" className="rotating" />
-                        {
-                          !balance && showMessage && (
-                            <div className='inter'>{message}</div>
-                          )
-                        }
+                        {!balance && (
+                            <div>
+                                <div className='inter'>{message}</div>
+                            </div>
+                        )}
+                        {mediaLoaded && (
+                            <div>
+                                <button onClick={onSkip}>
+                                Skip Loading
+                                </button>
+                            </div>
+                        )}
                         
                     </Box>
               <Box sx={{ position: 'relative', width: '100%',height:'100%', overflow: 'hidden' , marginTop:'-20px'}}>
                 <Box component="img"  alt="Full Width Image" sx={{ width: '100%', height: '100%' }} />
                 
-
+                        
               </Box>
 
          

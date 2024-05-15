@@ -20,13 +20,8 @@ export function useJettonContract() {
 
     const jettonContract = useAsyncInitialize(async()=>{
         if(!client || !wallet) return;
-        const queryParams = new URLSearchParams(window.location.search);
-        const refCodeFromURL = queryParams.get('refCode') || null;
-        setRefCode(refCodeFromURL);
         const contract = DiamonDash.fromAddress(Address.parse("EQAeRDReVfFAbqu-Nm-hfy1iAis8dheHuMmyHrXfrXmszWwu"))
-
         return client.open(contract) as OpenedContract<DiamonDash>
-
     }, [client, wallet])
 
 

@@ -64,7 +64,7 @@ const UpgradePage = React.forwardRef(({ handleClose }, ref) => {
                         </div>
 
                         </div>
-                        <div className='inter' style={{fontSize:'9px'}}>
+                        <div className='inter' style={{fontSize:'9px', color:'red'}}>
                             0.1% PENALTY
                         </div>
                     </Box>
