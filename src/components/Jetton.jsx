@@ -206,9 +206,15 @@ if ((!wallet || !mediaLoaded || !userbalance) && !skipLoading) {
 
               
                 <Box gap={3} sx={{ position: 'absolute', bottom: 0, width: '100%', height:'5vh', display: 'flex', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '4vh 0px'}}>
-                  <img src={mediaFiles.docs} className='image-style2' alt="First Image" style={{ width: 'auto' }} disabled={!connected} onClick={buy}/>
-                  <img src={mediaFiles.tg} className='image-style2' alt="Second Image" style={{ width: 'auto'}} />
-                  <img src={mediaFiles.x} className='image-style2' alt="Third Image" style={{ width: 'auto' }} />
+                <a href="https://t.me/DiamondDash_TON" target="_blank" rel="noopener noreferrer">
+        <img src={mediaFiles.docs} className='image-style2' alt="First Image" style={{ width: 'auto' }} />
+          </a>
+          <a href="https://t.me/DiamondDash_TON" target="_blank" rel="noopener noreferrer">
+            <img src={mediaFiles.tg} className='image-style2' alt="Second Image" style={{ width: 'auto' }} />
+          </a>
+          <a href="https://t.me/DiamondDash_TON" target="_blank" rel="noopener noreferrer">
+            <img src={mediaFiles.x} className='image-style2' alt="Third Image" style={{ width: 'auto' }} />
+          </a>
                 </Box>
               </Box>
 
