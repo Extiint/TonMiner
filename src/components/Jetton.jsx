@@ -122,7 +122,7 @@ if ((!wallet || !mediaLoaded || !userbalance) && !skipLoading) {
               <Box display="flex" alignItems="center" justifyContent="center" sx={{ width: '100%', backgroundColor: '#30302F', padding: '1px 0', marginTop:'-7px' }}>
                   <Box component="img" className='idiamonds' src={mediaFiles.diamondIcon} alt="Descriptive Alt Text" sx={{ marginLeft:'7px', width: 70, marginTop:"-10px"}} />
                     <div className='inter4' style={{ flexGrow: 1, textAlign: 'center', fontSize:'12px', }}>
-                      PENDING TON: 0.00000
+                      PENDING TON: 0.00
                     </div>
                     <button variant="contained" className='claimb' style={{marginRight:'10px' , fontSize:'12px',marginTop:"10px"}} disabled={!sell} onClick={() => {sell}}>
                       CLAIM
