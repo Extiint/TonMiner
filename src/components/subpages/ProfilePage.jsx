@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Box, TextField } from '@mui/material';
-import backgroundProfile from '../../media/bg/bgprofile.png'
-import ProfileFox from '../../media/bg/profileFox.png'
+import { Box } from '@mui/material';
 
-import line from '../../media/bg/line.png'
 import close from '../../media/icons/close.png'
-
+import { mediaFiles } from '../../hooks/utils/media';
 
 const ProfilePage = React.forwardRef(({ handleClose }, ref) => { 
         const [translateY, setTranslateY] = useState('-100%'); // Start above the viewport
@@ -32,7 +29,7 @@ const ProfilePage = React.forwardRef(({ handleClose }, ref) => {
 
     return (
         <>
-            <Box sx={modalStyle} ref={ref} src={backgroundProfile} >
+            <Box sx={modalStyle} ref={ref} >
                 <Box display="flex" alignItems="center" justifyContent="center" gap={2} sx={{ zIndex:5, top: 10, width: '100%', backgroundColor: '#30302F', padding: '20px 0', marginTop: '-7px' }}>
                     <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'center' }}>
                         PROFILE
@@ -48,7 +45,7 @@ const ProfilePage = React.forwardRef(({ handleClose }, ref) => {
                       0 
                   </div>
               </Box>
-              <Box component="img" src={backgroundProfile} alt="Full Width Image" sx={{ width: '100%', height: '80%' }} />
+              <Box component="img" src={mediaFiles.backgroundProfile} alt="Full Width Image" sx={{ width: '100%', height: '80%' }} />
 
               <Box  sx={{ position: 'absolute', top: '10vh', width: '60%', justifyContent: 'center', padding: '20px 0px'}}>
                 <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '7px 0', marginBottom:1  }}>
@@ -91,7 +88,7 @@ const ProfilePage = React.forwardRef(({ handleClose }, ref) => {
                 </Box>
 
                 <Box sx={{ position: 'absolute', bottom: 150, width: '40%', display: 'flex', justifyContent: 'right' , right:20}}>
-                  <img src={ProfileFox}  alt="First Image" style={{ width: '30vh'}}/>
+                  <img src={mediaFiles.ProfileFox}  alt="First Image" style={{ width: '30vh'}}/>
                 </Box>
   
 
@@ -128,7 +125,7 @@ const ProfilePage = React.forwardRef(({ handleClose }, ref) => {
                     </button>
                   </Box>
                     <Box sx={{ position: 'absolute', bottom: -3, width: '100%', display: 'flex' }}>
-                        <img src={line}  alt="First Image" style={{ width: '100%', height:15 }}/>
+                        <img src={mediaFiles.line}  alt="First Image" style={{ width: '100%', height:15 }}/>
                     </Box>
                 </Box>
 

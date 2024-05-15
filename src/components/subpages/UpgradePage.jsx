@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, TextField } from '@mui/material';
-import backgroundProfile from '../../media/bg/upgradeback.png'
-import upgradetable from '../../media/bg/upgrade1.png'
-
-import line from '../../media/bg/line.png'
+import { mediaFiles } from '../../hooks/utils/media';
 import close from '../../media/icons/close.png'
 import pickaxe1 from '../../media/pickaxes/1.png'
 
@@ -33,7 +30,7 @@ const UpgradePage = React.forwardRef(({ handleClose }, ref) => {
 
     return (
         <>
-            <Box sx={modalStyle} ref={ref} src={backgroundProfile} >
+            <Box sx={modalStyle} ref={ref} >
                 <Box display="flex" alignItems="center" justifyContent="center" gap={2} sx={{ zIndex:5, top: 10, width: '100%', backgroundColor: '#30302F', padding: '20px 0', marginTop: '-7px' }}>
                     <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'center' }}>
                         UPGRADE
@@ -49,7 +46,7 @@ const UpgradePage = React.forwardRef(({ handleClose }, ref) => {
                       NOW
                   </div>
               </Box>
-              <Box component="img" src={backgroundProfile} alt="Full Width Image" sx={{ width: '100%', height: '80%' }} />
+              <Box component="img" src={mediaFiles.backgroundUpgrade} alt="Full Width Image" sx={{ width: '100%', height: '80%' }} />
 
               <Box  sx={{ position: 'absolute', top: '12vh', width: '100%', justifyContent: 'center', padding: '20px 0px'}}>
                 <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '7px 0', marginBottom:1, zIndex:20  }}>
@@ -63,7 +60,7 @@ const UpgradePage = React.forwardRef(({ handleClose }, ref) => {
                             borderRadius: '10px', // Rounded corners
                             zIndex:100
                         }}>
-                            <img src={pickaxe1} alt="First Image" style={{ width: '15vh', marginTop:'10px'}} />
+                            <img src={mediaFiles.pickaxe1} alt="First Image" style={{ width: '15vh', marginTop:'10px'}} />
                         </div>
 
                         </div>
@@ -75,7 +72,7 @@ const UpgradePage = React.forwardRef(({ handleClose }, ref) => {
                 </Box>
 
                 <Box sx={{ position: 'absolute', bottom: 110, width: '100%', display: 'flex', justifyContent: 'center' }}>
-                  <img src={upgradetable}  alt="First Image" style={{ width: '32vh'}}/>
+                  <img src={mediaFiles.upgradetable}  alt="First Image" style={{ width: '32vh'}}/>
                 </Box>
   
 
@@ -93,7 +90,7 @@ const UpgradePage = React.forwardRef(({ handleClose }, ref) => {
                         </div>
                   </Box>
                     <Box sx={{ position: 'absolute', bottom: -3, width: '100%', display: 'flex' }}>
-                        <img src={line}  alt="First Image" style={{ width: '100%', height:15 }}/>
+                        <img src={mediaFiles.line}  alt="First Image" style={{ width: '100%', height:15 }}/>
                     </Box>
                 </Box>
 
