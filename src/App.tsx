@@ -3,6 +3,8 @@ import "./App.css";
 import { TonConnectUIProvider , THEME} from "@tonconnect/ui-react";
 import { Jetton } from "./components/Jetton";
 import "@twa-dev/sdk"
+import WebApp from "@twa-dev/sdk";
+
 
 function App() {
 

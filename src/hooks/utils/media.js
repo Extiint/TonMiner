@@ -32,12 +32,16 @@ function preloadImage(src) {
 }
 
 function preloadAudio(src) {
-    return new Promise((resolve, reject) => {
-        const audio = new Audio();
-        audio.src = src;
-        audio.oncanplaythrough = resolve;
-        audio.onerror = reject;
-    });
+    const audio = new Audio();
+    if (audio.canPlayType('audio/mpeg')) {
+        return new Promise((resolve, reject) => {
+            audio.src = src;
+            audio.oncanplaythrough = resolve;
+            audio.onerror = () => reject(new Error('Failed to load audio: ' + src));
+        });
+    } else {
+        return Promise.reject(new Error('MP3 audio not supported by this browser.'));
+    }
 }
 
 export function loadAllMedia() {
