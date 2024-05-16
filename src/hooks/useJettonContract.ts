@@ -19,15 +19,16 @@ export function useJettonContract() {
 
     let isSync = false;
     const { search } = useLocation();
-    const params = new URLSearchParams(search);
-    const startApp = params.get('startapp');
     
 
     const jettonContract = useAsyncInitialize(async()=>{
         
     console.log(search,"log")
         if(!client || !wallet) return;
-        setRefCode(search)
+        const queryParams = new URLSearchParams(search);
+        const startParam = queryParams.get('tgWebAppStartParam');
+        console.log('Extracted Code:', startParam);  // This should log 'my_code'
+        setRefCode(startParam);
         const contract = DiamonDash.fromAddress(Address.parse("EQAeRDReVfFAbqu-Nm-hfy1iAis8dheHuMmyHrXfrXmszWwu"))
         return client.open(contract) as OpenedContract<DiamonDash>
     }, [client, wallet])
