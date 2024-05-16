@@ -5,6 +5,7 @@ import App from "./App";
 import "./index.css";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 
+// this manifest is used temporarily for development purposes
 const manifestUrl = "https://extiint.github.io/TonMiner/tonconnect-manifest.json";
 
 const queryClient = new QueryClient({
