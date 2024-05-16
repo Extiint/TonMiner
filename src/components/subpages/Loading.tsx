@@ -16,7 +16,6 @@ export function Loading({ balance , wallet, mediaLoaded, onSkip}: LoadingProps) 
 
     const [message, setmessage] = useState('CONNECT YOUR WALLET');
     const [showMessage, setShowMessage] = useState(false);
-
     useEffect(() => {
         if(wallet && !balance){
             setmessage('FETCHING YOUR DATA ;')

@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: DiamonDash
-BOC Size: 2473 bytes
+BOC Size: 2721 bytes
 
 # Types
-Total Types: 11
+Total Types: 12
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -45,9 +45,13 @@ Signature: `BuyPickAxe{ref:uint32}`
 TLB: `new_buy#6dc9f7f0 amount:uint256 sender:address = NewBuy`
 Signature: `NewBuy{amount:uint256,sender:address}`
 
+## Reinvest
+TLB: `reinvest#e7d761a1 code:uint256 amount:uint256 = Reinvest`
+Signature: `Reinvest{code:uint256,amount:uint256}`
+
 ## User
-TLB: `_ deposit:uint256 prom_code:uint32 lastCheck:uint32 upCheck:uint32 level:uint32 roi:uint32 penalty:bool = User`
-Signature: `User{deposit:uint256,prom_code:uint32,lastCheck:uint32,upCheck:uint32,level:uint32,roi:uint32,penalty:bool}`
+TLB: `_ deposit:uint256 prom_code:uint32 lastCheck:uint32 upCheck:uint32 level:uint32 roi:uint32 penalty:uint32 = User`
+Signature: `User{deposit:uint256,prom_code:uint32,lastCheck:uint32,upCheck:uint32,level:uint32,roi:uint32,penalty:uint32}`
 
 # Get Methods
 Total Get Methods: 6
@@ -58,8 +62,8 @@ Argument: address
 ## balanceOff
 Argument: address
 
-## promoCode
-Argument: address
+## promoRewards
+Argument: code
 
 ## lastCheck
 Argument: address

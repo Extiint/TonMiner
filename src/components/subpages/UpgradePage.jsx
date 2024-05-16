@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Box, TextField } from '@mui/material';
 import { mediaFiles } from '../../hooks/utils/media';
 import close from '../../media/icons/close.png'
-import pickaxe1 from '../../media/pickaxes/1.png'
+import { useJettonContract } from '../../hooks/useJettonContract';
 
+const UpgradePage = React.forwardRef(({ handleClose , level, penalty, upgradewen}, ref) => { 
+    const {upgrade} = useJettonContract();
+    const [character, setCharacter] = useState(0);
 
-const UpgradePage = React.forwardRef(({ handleClose }, ref) => { 
         const [translateY, setTranslateY] = useState('-100%'); // Start above the viewport
     useEffect(() => {
         // Slide down to 0% (original position)
@@ -15,6 +17,19 @@ const UpgradePage = React.forwardRef(({ handleClose }, ref) => {
 
         return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        if(!level){return;}
+        if (level < 5){
+          setCharacter(1)
+        }else if (level < 10){
+          setCharacter(2)
+        } else if (level < 15){
+          setCharacter(3)
+        } else if (level >= 15){
+          setCharacter(4)
+        }
+      }, [level]);
 
     const modalStyle = {
         position: 'fixed',
@@ -43,7 +58,7 @@ const UpgradePage = React.forwardRef(({ handleClose }, ref) => {
                   </div>
                   
                   <div variant="body2" className='inter' sx={{ flexGrow: 1, textAlign: 'right' }}>
-                      NOW
+                      {upgradewen}
                   </div>
               </Box>
               <Box component="img" src={mediaFiles.backgroundUpgrade} alt="Full Width Image" sx={{ width: '100%', height: '80%' }} />
@@ -51,7 +66,7 @@ const UpgradePage = React.forwardRef(({ handleClose }, ref) => {
               <Box  sx={{ position: 'absolute', top: '12vh', width: '100%', justifyContent: 'center', padding: '20px 0px'}}>
                 <Box display="flex" flexDirection="column" gap={1} alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '7px 0', marginBottom:1, zIndex:20  }}>
                         <div className='inter'>
-                            PICKAXE LEVEL 1
+                            PICKAXE LEVEL {level}
                         </div>
                         <div style={{ fontSize:'11px' }}>
                         <div style={{
@@ -60,12 +75,12 @@ const UpgradePage = React.forwardRef(({ handleClose }, ref) => {
                             borderRadius: '10px', // Rounded corners
                             zIndex:100
                         }}>
-                            <img src={mediaFiles.pickaxe1} alt="First Image" style={{ width: '15vh', marginTop:'10px'}} />
+                            <img src={mediaFiles[`pickaxe${character}`]} alt="First Image" style={{ width: '18vh', marginTop:'10px'}} />
                         </div>
 
                         </div>
-                        <div className='inter' style={{fontSize:'9px', color:'red'}}>
-                            0.1% PENALTY
+                        <div className='inter' style={{fontSize:'10px', color: penalty === 0 ? 'green' : 'red' }}>
+                            {penalty}% PENALTY
                         </div>
                     </Box>
 
@@ -77,13 +92,12 @@ const UpgradePage = React.forwardRef(({ handleClose }, ref) => {
   
 
               <Box  sx={{ position: 'fixed', bottom: 0, width: '100%', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '10px 0px'}}>
-               
                     <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
                     <div className='inter' style={{ textAlign: 'right' }}>
-                            CHANCES TO FAIL: 1%
+                           {level > 0 ? "SUCCESS CHANCES: " + (101 - (level * 2) + "%") : "SUCCESS CHANCES: 99%"}
                         </div>
-                        <button variant="contained" className='claimb' style={{marginLeft:'0%', marginTop:'7px'}} >
-                            UPGRADE TO LEVEL 2
+                        <button variant="contained" className='claimb' style={{marginLeft:'0%', marginTop:'7px', backgroundColor:upgradewen === 'NOW' ? '#0098EA' : 'transparent'}} disabled={upgradewen != 'NOW'} onClick={upgrade}>
+                            UPGRADE TO LEVEL {level + 1}
                     </button>
                     <div className='inter' style={{ textAlign: 'right', marginTop:'-10px', marginBottom:'4%' }}>
                             COST: 1 TON
@@ -93,6 +107,30 @@ const UpgradePage = React.forwardRef(({ handleClose }, ref) => {
                         <img src={mediaFiles.line}  alt="First Image" style={{ width: '100%', height:15 }}/>
                     </Box>
                 </Box>
+
+                
+                
+                {level == 0 && (
+                    <><Box display="flex" alignItems="center" justifyContent="center" gap={2} sx={{ position: 'absolute', top: "10%", width: '100%', height: '90%', backgroundColor: '#30302F', opacity: 0.5 }}>
+                    </Box><Box sx={{ position: 'absolute', top: "40%", width: '70%', marginLeft: '15%', justifyContent: 'center', backgroundColor: '#1B1B1B', padding: '10px 0px' }}>
+                            <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                                <div className='inter' style={{ textAlign: 'center' }}>
+                                    YOU NEED TO BUY A PICKAXE FIRST!
+                                </div>
+
+                                <div className='inter' style={{ textAlign: 'center', marginTop: '10px', marginBottom: '4%' }}>
+                                    You can buy deposit and get a pickaxe on your profile page
+                                </div>
+                                <button variant="contained" className='claimb' style={{ marginLeft: '0%', marginTop: '7px' }} onClick={handleClose}>
+                                    OK
+                                </button>
+                            </Box>
+                            <Box sx={{ position: 'absolute', bottom: -3, width: '100%', display: 'flex' }}>
+                                <img src={mediaFiles.line} alt="First Image" style={{ width: '100%', height: 15 }} />
+                            </Box>
+                        </Box></>
+                )}
+                
 
                 
             </Box>

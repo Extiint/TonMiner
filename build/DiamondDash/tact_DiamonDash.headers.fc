@@ -63,6 +63,9 @@ builder $NewBuy$_store(builder build_0, (int, slice) v) inline;
 ;; $NewBuy$_store_cell
 cell $NewBuy$_store_cell((int, slice) v) inline;
 
+;; $Reinvest$_load
+(slice, ((int, int))) $Reinvest$_load(slice sc_0) inline;
+
 ;; $User$_store
 builder $User$_store(builder build_0, (int, int, int, int, int, int, int) v) inline_ref;
 
@@ -147,8 +150,8 @@ int $global_random(int $min, int $max) impure inline;
 ;; $DiamonDash$_fun_withdraw
 ((slice, int, int, int, cell, cell), ()) $DiamonDash$_fun_withdraw((slice, int, int, int, cell, cell) $self) impure inline_ref;
 
-;; $DiamonDash$_fun_promoCode
-((slice, int, int, int, cell, cell), int) $DiamonDash$_fun_promoCode((slice, int, int, int, cell, cell) $self, slice $address) impure inline_ref;
+;; $DiamonDash$_fun_promoRewards
+((slice, int, int, int, cell, cell), int) $DiamonDash$_fun_promoRewards((slice, int, int, int, cell, cell) $self, int $code) impure inline_ref;
 
 ;; $DiamonDash$_fun_lastCheck
 ((slice, int, int, int, cell, cell), int) $DiamonDash$_fun_lastCheck((slice, int, int, int, cell, cell) $self, slice $address) impure inline_ref;

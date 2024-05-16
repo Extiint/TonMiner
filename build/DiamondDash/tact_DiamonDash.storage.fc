@@ -100,8 +100,21 @@ cell $NewBuy$_store_cell((int, slice) v) inline {
 }
 
 ;;
+;; Type: Reinvest
+;; Header: 0xe7d761a1
+;; TLB: reinvest#e7d761a1 code:uint256 amount:uint256 = Reinvest
+;;
+
+(slice, ((int, int))) $Reinvest$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 3889652129);
+    var v'code = sc_0~load_uint(256);
+    var v'amount = sc_0~load_uint(256);
+    return (sc_0, (v'code, v'amount));
+}
+
+;;
 ;; Type: User
-;; TLB: _ deposit:uint256 prom_code:uint32 lastCheck:uint32 upCheck:uint32 level:uint32 roi:uint32 penalty:bool = User
+;; TLB: _ deposit:uint256 prom_code:uint32 lastCheck:uint32 upCheck:uint32 level:uint32 roi:uint32 penalty:uint32 = User
 ;;
 
 builder $User$_store(builder build_0, (int, int, int, int, int, int, int) v) inline_ref {
@@ -112,7 +125,7 @@ builder $User$_store(builder build_0, (int, int, int, int, int, int, int) v) inl
     build_0 = build_0.store_uint(v'upCheck, 32);
     build_0 = build_0.store_uint(v'level, 32);
     build_0 = build_0.store_uint(v'roi, 32);
-    build_0 = build_0.store_int(v'penalty, 1);
+    build_0 = build_0.store_uint(v'penalty, 32);
     return build_0;
 }
 
@@ -127,7 +140,7 @@ cell $User$_store_cell((int, int, int, int, int, int, int) v) inline {
     var v'upCheck = sc_0~load_uint(32);
     var v'level = sc_0~load_uint(32);
     var v'roi = sc_0~load_uint(32);
-    var v'penalty = sc_0~load_int(1);
+    var v'penalty = sc_0~load_uint(32);
     return (sc_0, (v'deposit, v'prom_code, v'lastCheck, v'upCheck, v'level, v'roi, v'penalty));
 }
 

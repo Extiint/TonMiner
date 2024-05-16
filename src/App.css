@@ -135,6 +135,17 @@ html, body {
   animation: pulse 2s infinite ease-in-out, shine 2s infinite ease-in-out; /* Two animations */
 }
 
+.image-styleLum {
+  -webkit-tap-highlight-color: transparent; 
+    outline: none;
+  cursor: pointer;        
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  height: 9vh;
+  animation: pulseBig 1.5s infinite ease-in-out, shineBig 1.5s infinite ease-in-out; /* Two animations */
+}
+
 .image-style2 {
   cursor: pointer;        
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -165,6 +176,23 @@ html, body {
   }
   50% {
     filter: brightness(1.1) contrast(1.1); /* Brighter and more contrast in the middle of the animation */
+  }
+}
+
+@keyframes pulseBig {
+  0%, 100% {
+    transform: scale(1); /* Original size */
+  }
+  50% {
+    transform: scale(1.1); /* Scale up to 105% of the original size */
+  }
+}
+@keyframes shineBig {
+  0%, 100% {
+    filter: brightness(0.5) contrast(1); /* Normal state */
+  }
+  50% {
+    filter: brightness(3) contrast(2); /* Brighter and more contrast in the middle of the animation */
   }
 }
 

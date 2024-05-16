@@ -19,6 +19,7 @@ PROGRAM{
   DECLPROC $BuyPickAxe$_load
   DECLPROC $NewBuy$_store
   DECLPROC $NewBuy$_store_cell
+  DECLPROC $Reinvest$_load
   DECLPROC $User$_store
   DECLPROC $User$_store_cell
   DECLPROC $User$_load
@@ -47,7 +48,7 @@ PROGRAM{
   DECLPROC $DiamonDash$_fun_getRewards
   DECLPROC $DiamonDash$_fun_sendtax
   DECLPROC $DiamonDash$_fun_withdraw
-  DECLPROC $DiamonDash$_fun_promoCode
+  DECLPROC $DiamonDash$_fun_promoRewards
   DECLPROC $DiamonDash$_fun_lastCheck
   DECLPROC $DiamonDash$_fun_mybalance
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
@@ -60,11 +61,13 @@ PROGRAM{
   DECLPROC $DiamonDash$_internal_text_10afebcfc3fc2db72c41c6d873a6960471b5941d6ed47dffc695eace74dd6f67
   DECLPROC $DiamonDash$_internal_text_047428161644b549777373c2ab243ff85f0c571688ab4a3c9bc7dfc1cc8f4c8a
   DECLPROC $DiamonDash$_internal_text_250b76e2b9576fc6b4c45129483006b0003a0c39b6f7ae413d177f4e3479dbca
+  DECLPROC $DiamonDash$_internal_text_4cef4940d15b254a883709e1afc274d668813163bf43f8960e64ac6de09d0070
   DECLPROC $DiamonDash$_internal_text_c1aee19fdcb2e1fc24253d407c2a01609e68beaf5dd599dc00916f7cb4066764
+  DECLPROC $DiamonDash$_internal_binary_Reinvest
   DECLPROC $DiamonDash$_internal_binary_Deploy
   105294 DECLMETHOD %getRewards
   82109 DECLMETHOD %balanceOff
-  96523 DECLMETHOD %promoCode
+  101488 DECLMETHOD %promoRewards
   83972 DECLMETHOD %lastCheck
   121299 DECLMETHOD %mybalance
   83229 DECLMETHOD %owner
@@ -231,6 +234,16 @@ PROGRAM{
     $NewBuy$_store INLINECALLDICT
     ENDC
   }>
+  $Reinvest$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    3889652129 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    256 LDU
+    256 LDU
+    -ROT
+  }>
   $User$_store PROCREF:<{
     s6 s7 XCHG2
     256 STU
@@ -241,7 +254,7 @@ PROGRAM{
     32 STU
     32 STU
     32 STU
-    1 STI
+    32 STU
   }>
   $User$_store_cell PROCINLINE:<{
     NEWC
@@ -256,7 +269,7 @@ PROGRAM{
     32 LDU
     32 LDU
     32 LDU
-    1 LDI
+    32 LDU
     7 -ROLL
   }>
   $User$_as_optional PROCINLINE:<{
@@ -543,26 +556,29 @@ PROGRAM{
     NOW
     ROT
     SUB
-    s0 s2 XCHG
-    -1 EQINT
+    s1 s2 PUSH2
+    GREATER
     IF:<{
-      DEC
+      s0 s2 XCHG
+      SUB
     }>ELSE<{
+      2 1 BLKDROP2
+      1 PUSHINT
     }>
     s1 s2 XCHG
     MUL
     1000 PUSHINT
     DIV
-    OVER
-    172800 PUSHINT
+    MUL
+    864 PUSHINT
+    DIV
+    __tact_my_balance INLINECALLDICT
+    s1 s(-1) PUXC
     GREATER
     IF:<{
-      172800 PUSHINT
-      s2 POP
+      DROP
+      __tact_my_balance INLINECALLDICT
     }>
-    MUL
-    86400 PUSHINT
-    DIV
   }>
   $DiamonDash$_fun_sendtax PROCREF:<{
     s5 s2 PUXC
@@ -615,7 +631,7 @@ PROGRAM{
       $SendParameters$_constructor_to_value INLINECALLDICT
       $global_send INLINECALLDICT
       s2 PUSH
-      1000000000 PUSHINT
+      50000000 PUSHINT
       GEQ
       IF:<{
         s4 s3 XCHG2
@@ -631,28 +647,11 @@ PROGRAM{
       6 6 BLKDROP2
     }>
   }>
-  $DiamonDash$_fun_promoCode PROCREF:<{
-    DROP
-    s5 s4 s3 PUSH3
-    s5 s4 s3 PUSH3
-    s6 PUSH
+  $DiamonDash$_fun_promoRewards PROCREF:<{
     257 PUSHINT
-    __tact_context_get_sender INLINECALLDICT
-    s6 s14 XCHG
-    s5 s13 XCHG
-    s4 s12 XCHG
-    s3 s11 XCHG
-    s10 s9 s0 XCHG3
-    $DiamonDash$_fun_balanceOff INLINECALLDICT
-    6 1 BLKDROP2
-    $User$_not_null INLINECALLDICT
-    $User$_get_prom_code INLINECALLDICT
-    s3 PUSH
-    s3 s5 XCHG
-    s2 s4 XCHG
+    s0 s2 PUSH2
+    s3 s3 XCHG2
     __tact_dict_get_int_int INLINECALLDICT
-    s6 s5 s0 XCHG3
-    s4 s3 s0 XCHG3
   }>
   $DiamonDash$_fun_lastCheck PROCREF:<{
     s6 s5 s4 PUSH3
@@ -787,12 +786,12 @@ PROGRAM{
       $Context$_get_value INLINECALLDICT
       s0 s6 XCHG2
       SUB
-      s6 PUSH
       NOW
       0 PUSHINT
       1 PUSHINT
       7 PUSHINT
-      FALSE
+      s2 s10 PUSH2
+      5 -ROLL
       $User$_constructor_deposit_prom_code_lastCheck_upCheck_level_roi_penalty INLINECALLDICT
       $User$_store_cell INLINECALLDICT
       s3 s4 XCHG
@@ -809,7 +808,7 @@ PROGRAM{
       s3 s3 XCHG2
     }>
     s2 PUSH
-    1000000000 PUSHINT
+    50000000 PUSHINT
     GEQ
     IF:<{
       SWAP
@@ -825,31 +824,16 @@ PROGRAM{
     s2 s(-1) s(-1) PUXCPU
     s10 s(-1) PUXC
     __tact_dict_get_int_int INLINECALLDICT
-    257 PUSHINT
-    s3 s(-1) s(-1) PUXCPU
-    s4 s(-1) PUXC
-    __tact_dict_get_int_int INLINECALLDICT
-    __tact_not_null INLINECALLDICT
-    SWAP
     ISNULL
     NOT
     IF:<{
-      s1 s8 PUSH2
+      s7 PUSH
       NEQ
     }>ELSE<{
+      DROP
       FALSE
     }>
     IF:<{
-      257 PUSHINT
-      __tact_context_get INLINECALLDICT
-      $Context$_get_value INLINECALLDICT
-      1 LSHIFT#
-      100 PUSHINT
-      DIV
-      s1 s2 XCHG
-      ADD
-      s2 s0 s2 XC2PU
-      __tact_dict_set_int_int INLINECALLDICT
       257 PUSHINT
       s1 s0 s0 PUSH3
       s10 s(-1) PUXC
@@ -867,7 +851,6 @@ PROGRAM{
       s2 s9 XCHG
       __tact_dict_set_int_int INLINECALLDICT
     }>ELSE<{
-      2DROP
       s6 POP
       257 PUSHINT
       10000 PUSHINT
@@ -912,38 +895,62 @@ PROGRAM{
   $DiamonDash$_internal_text_250b76e2b9576fc6b4c45129483006b0003a0c39b6f7ae413d177f4e3479dbca PROCINLINE:<{
     $DiamonDash$_fun_withdraw INLINECALLDICT
   }>
+  $DiamonDash$_internal_text_4cef4940d15b254a883709e1afc274d668813163bf43f8960e64ac6de09d0070 PROCINLINE:<{
+    __tact_context_get_sender INLINECALLDICT
+    $DiamonDash$_fun_balanceOff INLINECALLDICT
+    $User$_not_null INLINECALLDICT
+    s5 s6 XCHG
+    6 BLKDROP
+    257 PUSHINT
+    s2 s(-1) s(-1) PUXCPU
+    s3 s(-1) PUXC
+    __tact_dict_get_int_int INLINECALLDICT
+    __tact_not_null INLINECALLDICT
+    257 PUSHINT
+    0 PUSHINT
+    OVER
+    s4 s5 XCHG
+    s2 s3 XCHG
+    s2 s5 XCHG
+    __tact_dict_set_int_int INLINECALLDICT
+    __tact_context_get_sender INLINECALLDICT
+    ROT
+    $SendParameters$_constructor_to_value INLINECALLDICT
+    $global_send INLINECALLDICT
+  }>
   $DiamonDash$_internal_text_c1aee19fdcb2e1fc24253d407c2a01609e68beaf5dd599dc00916f7cb4066764 PROCINLINE:<{
     16798 PUSHINT
     __tact_context_get INLINECALLDICT
     $Context$_get_value INLINECALLDICT
-    1000000000 PUSHINT
+    50000000 PUSHINT
     EQUAL
     THROWANYIFNOT
     __tact_context_get_sender INLINECALLDICT
     $DiamonDash$_fun_balanceOff INLINECALLDICT
     $User$_not_null INLINECALLDICT
-    DROP
     __tact_context_get INLINECALLDICT
     $Context$_get_value INLINECALLDICT
-    s1 s9 XCHG
+    1 RSHIFT#
+    s1 s10 XCHG
     ADD
     9760 PUSHINT
     NOW
-    s0 s4 XCHG2
+    s0 s5 XCHG2
     SUB
     86400 PUSHINT
     GEQ
-    s1 s3 XCHG
+    s1 s4 XCHG
     THROWANYIFNOT
     0 PUSHINT
     100 PUSHINT
     $global_random INLINECALLDICT
     97 PUSHINT
-    s2 PUSH
+    s3 PUSH
     1 LSHIFT#
     SUB
     LESS
     IF:<{
+      s8 POP
       267 PUSHINT
       __tact_context_get_sender INLINECALLDICT
       NOW
@@ -954,7 +961,7 @@ PROGRAM{
       s5 s7 XCHG
       5 3 REVERSE
       s7 s10 s0 XCHG3
-      FALSE
+      0 PUSHINT
       $User$_constructor_deposit_prom_code_lastCheck_upCheck_level_roi_penalty INLINECALLDICT
       $User$_store_cell INLINECALLDICT
       s3 s4 XCHG
@@ -965,20 +972,89 @@ PROGRAM{
     }>ELSE<{
       267 PUSHINT
       __tact_context_get_sender INLINECALLDICT
-      s4 s6 XCHG
-      5 2 REVERSE
       NOW
-      s0 s7 s10 XCHG3
-      TRUE
+      s0 s11 XCHG
+      INC
+      s6 s8 XCHG
+      5 4 REVERSE
+      s3 s11 XCHG
+      s8 s11 s0 XCHG3
       $User$_constructor_deposit_prom_code_lastCheck_upCheck_level_roi_penalty INLINECALLDICT
       $User$_store_cell INLINECALLDICT
       s3 s4 XCHG
-      s5 s5 s0 XCHG3
+      s1 s5 XCHG
       __tact_dict_set_slice_cell INLINECALLDICT
       B{b5ee9c7241010101000c000014000000004661696c656433d102a9} B>boc PUSHREF
       $global_emit INLINECALLDICT
     }>
     SWAP
+  }>
+  $DiamonDash$_internal_binary_Reinvest PROCINLINE:<{
+    __tact_context_get_sender INLINECALLDICT
+    s6 s8 XCHG
+    5 4 REVERSE
+    s3 s7 XCHG
+    s8 s7 s0 XCHG3
+    $DiamonDash$_fun_balanceOff INLINECALLDICT
+    $User$_not_null INLINECALLDICT
+    s4 POP
+    __tact_context_get_sender INLINECALLDICT
+    s6 s12 XCHG
+    s5 s11 XCHG
+    s4 s10 XCHG
+    s3 s9 XCHG
+    s8 s7 s0 XCHG3
+    $DiamonDash$_fun_getRewards INLINECALLDICT
+    267 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s14 s2 XCHG2
+    ADD
+    s0 s5 XCHG
+    s4 s12 XCHG
+    NOW
+    s0 s4 XCHG
+    s3 s11 XCHG
+    s10 s9 s12 XCHG3
+    $User$_constructor_deposit_prom_code_lastCheck_upCheck_level_roi_penalty INLINECALLDICT
+    $User$_store_cell INLINECALLDICT
+    s3 s6 XCHG
+    s8 s4 s0 XCHG3
+    __tact_dict_set_slice_cell INLINECALLDICT
+    __tact_context_get_sender INLINECALLDICT
+    s6 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    IF:<{
+      257 PUSHINT
+      10000 PUSHINT
+      s1 s0 s1 PUSH3
+      s7 PUSH
+      3 -ROLL
+      __tact_dict_get_int_int INLINECALLDICT
+      __tact_not_null INLINECALLDICT
+      s9 PUSH
+      SUB
+      s2 PUSH
+      s4 s6 XCHG
+      __tact_dict_set_int_int INLINECALLDICT
+      257 PUSHINT
+      s1 s0 s0 PUSH3
+      s11 s(-1) PUXC
+      __tact_dict_get_int_int INLINECALLDICT
+      __tact_not_null INLINECALLDICT
+      s0 s8 XCHG2
+      ADD
+      s3 s0 s7 XC2PU
+      s3 s8 XCHG
+      s2 s9 XCHG
+      __tact_dict_set_int_int INLINECALLDICT
+      s4 s5 XCHG
+    }>ELSE<{
+      s6 POP
+      s6 POP
+    }>
+    s1 s3 XCHG
+    s1 s5 XCHG
+    s1 s4 XCHG
   }>
   $DiamonDash$_internal_binary_Deploy PROCINLINE:<{
     $DeployOk$_constructor_queryId INLINECALLDICT
@@ -1000,11 +1076,10 @@ PROGRAM{
     6 1 BLKDROP2
     $User$_to_opt_external INLINECALLDICT
   }>
-  %promoCode PROC:<{
-    __tact_verify_address INLINECALLDICT
+  %promoRewards PROC:<{
     $DiamonDash$_contract_load INLINECALLDICT
     6 ROLL
-    $DiamonDash$_fun_promoCode INLINECALLDICT
+    $DiamonDash$_fun_promoRewards INLINECALLDICT
     6 1 BLKDROP2
   }>
   %lastCheck PROC:<{
@@ -1032,7 +1107,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d6454637532794a35726d71645461645663313941454274565643526b655874744151694d62664a394e434239} PUSHSLICE
+    x{697066733a2f2f516d525374344c69617076774466474b73546b7954466e4b6347454c4779327547544777354568694e3943574668} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -1065,6 +1140,16 @@ PROGRAM{
       $BuyPickAxe$_load INLINECALLDICT
       NIP
       $DiamonDash$_internal_binary_BuyPickAxe INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    3889652129 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $Reinvest$_load INLINECALLDICT
+      1 2 BLKDROP2
+      $DiamonDash$_internal_binary_Reinvest INLINECALLDICT
       TRUE
     }>
     DUP
@@ -1104,6 +1189,15 @@ PROGRAM{
       IFJMP:<{
         DROP
         $DiamonDash$_internal_text_250b76e2b9576fc6b4c45129483006b0003a0c39b6f7ae413d177f4e3479dbca INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      DUP
+      34798558515777945891901131279064108238611863480319346082320896112201383608432 PUSHINT
+      EQUAL
+      IFJMP:<{
+        DROP
+        $DiamonDash$_internal_text_4cef4940d15b254a883709e1afc274d668813163bf43f8960e64ac6de09d0070 INLINECALLDICT
         TRUE
         RETALT
       }>
