@@ -42,7 +42,7 @@ export function Jetton() {
 
                 setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
             } else {
-                setTimeLeft('Time for upgrade has passed.');
+                setTimeLeft('NOW');
                 clearInterval(interval);
             }
         }, 1000);

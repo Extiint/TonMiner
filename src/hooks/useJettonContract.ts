@@ -63,10 +63,6 @@ export function useJettonContract() {
                         jettonContract.getGetRewards(address),
                         jettonContract.getBalanceOff(address)
                     ]);
-
-                    if(balance && !promo){
-                        setcanStart(true);
-                    }   
                     
                     isSync = false;
                     setUserbalance(Number(fromNano(balance.account.balance.coins)));
@@ -80,9 +76,7 @@ export function useJettonContract() {
                         setPenalty(Number(stats?.penalty) / 10)
                         setUpgradewen(Number(stats?.upCheck))
                         setMycode(Number(stats?.prom_code))
-                    } else if(!stats && address && wallet && client){
-                        setcanStart(true);
-                    }   
+                    } 
                 }
             } catch (error) {
                 console.error('Error fetching balance:', error);
@@ -96,7 +90,7 @@ export function useJettonContract() {
         return () => {
             if (intervalId) clearInterval(intervalId);  // Clear interval on component unmount
         };
-    }, [jettonContract, wallet]);
+    }, [jettonContract, wallet, client]);
 
     return {
         refCode,
