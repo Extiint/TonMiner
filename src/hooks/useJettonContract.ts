@@ -4,6 +4,7 @@ import {DiamonDash , BuyPickAxe } from "../../build/DiamondDash/tact_DiamonDash"
 import { useAsyncInitialize } from "./useAsyncInitialize";
 import { useTonClient } from "./useTonClient";
 import { useTonConnect } from "./useTonConnect";
+import { useLocation } from "react-router-dom";
 
 export function useJettonContract() {
     const {client} = useTonClient();
@@ -25,12 +26,17 @@ export function useJettonContract() {
     }, [client, wallet])
 
     useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const referralCode = urlParams.get('start');
-        console.log(referralCode)
-        setRefCode(referralCode);
-    }, [window.location.search]);
+        const { search } = useLocation();
+        const params = new URLSearchParams(search);
+        const startApp: string | null = params.get('startapp');
 
+        if (startApp !== null) {
+            console.log("Received start parameter:", startApp);
+            setRefCode(startApp)
+        } else {
+            console.log("No start parameters provided");
+        }
+    }, []);
 
     useEffect(() => {
         let intervalId: ReturnType<typeof setInterval> | null = null; 
