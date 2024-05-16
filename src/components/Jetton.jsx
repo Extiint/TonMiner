@@ -14,7 +14,7 @@ import { mediaFiles } from '../hooks/utils/media';
 
 export function Jetton() {
   const { connected, wallet } = useTonConnect();
-  const { balance,userbalance , miner, lasthatch, rewards, buy, sell } = useJettonContract();
+  const { balance,userbalance ,refCode, miner, lasthatch, rewards, buy, sell } = useJettonContract();
   const [open, setOpen] = useState(false);
   const [tokenPrice, setTokenPrice] = useState(null);
   const [mediaLoaded, setMediaLoaded] = useState(false);
@@ -125,7 +125,7 @@ if ((!wallet || !mediaLoaded || !userbalance) && !skipLoading) {
                       PENDING TON: 0.00
                     </div>
                     <button variant="contained" className='claimb' style={{marginRight:'10px' , fontSize:'12px',marginTop:"10px"}} disabled={!sell} onClick={() => {sell}}>
-                      CLAIM
+                    {refCode}
                     </button>
               </Box>
 

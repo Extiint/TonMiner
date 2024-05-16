@@ -24,6 +24,13 @@ export function useJettonContract() {
         return client.open(contract) as OpenedContract<DiamonDash>
     }, [client, wallet])
 
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const referralCode = urlParams.get('ref');
+        console.log(referralCode)
+        setRefCode(referralCode);
+    }, [window.location.search]);
+
 
     useEffect(() => {
         let intervalId: ReturnType<typeof setInterval> | null = null; 
