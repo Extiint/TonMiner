@@ -26,7 +26,7 @@ export function useJettonContract() {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const referralCode = urlParams.get('ref');
+        const referralCode = urlParams.get('start');
         console.log(referralCode)
         setRefCode(referralCode);
     }, [window.location.search]);
