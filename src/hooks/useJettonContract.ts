@@ -23,12 +23,9 @@ export function useJettonContract() {
 
     const jettonContract = useAsyncInitialize(async()=>{
         
-    console.log(search,"log")
+  
         if(!client || !wallet) return;
-        const queryParams = new URLSearchParams(search);
-        const startParam = queryParams.get('tgWebAppStartParam');
-        console.log('Extracted Code:', startParam);  // This should log 'my_code'
-        setRefCode(startParam);
+        
         const contract = DiamonDash.fromAddress(Address.parse("EQAeRDReVfFAbqu-Nm-hfy1iAis8dheHuMmyHrXfrXmszWwu"))
         return client.open(contract) as OpenedContract<DiamonDash>
     }, [client, wallet])
@@ -39,6 +36,10 @@ export function useJettonContract() {
         let intervalId: ReturnType<typeof setInterval> | null = null; 
         
         async function updateBalance() {
+            const queryParams = new URLSearchParams(search);
+            const startParam = queryParams.get('tgWebAppStartParam');
+            console.log('Extracted Code:', startParam);  // This should log 'my_code'
+            setRefCode(startParam);
             if (!jettonContract || !wallet || !client) return;
             try {
                 if (isSync){return;}

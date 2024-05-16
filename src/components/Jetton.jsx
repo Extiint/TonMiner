@@ -125,7 +125,7 @@ if ((!wallet || !mediaLoaded || !userbalance) && !skipLoading) {
                       PENDING TON: 0.00
                     </div>
                     <button variant="contained" className='claimb' style={{marginRight:'10px' , fontSize:'12px',marginTop:"10px"}} disabled={!sell} onClick={() => {sell}}>
-                    {refCode}
+                      CLAIM {refCode}
                     </button>
               </Box>
 
