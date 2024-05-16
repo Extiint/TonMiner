@@ -18,13 +18,7 @@ export function useJettonContract() {
     const [refCode, setRefCode] = useState<string | null>(null);
 
     let isSync = false;
-    const { search } = useLocation();
-    const params = new URLSearchParams(search);
-    const startApp = params.get('startapp');
-    console.log(search,"log")
-
     const jettonContract = useAsyncInitialize(async()=>{
-
         if(!client || !wallet) return;
         const contract = DiamonDash.fromAddress(Address.parse("EQAeRDReVfFAbqu-Nm-hfy1iAis8dheHuMmyHrXfrXmszWwu"))
         return client.open(contract) as OpenedContract<DiamonDash>
@@ -32,7 +26,6 @@ export function useJettonContract() {
 
 
     useEffect(() => {
-        setRefCode(search)
 
         let intervalId: ReturnType<typeof setInterval> | null = null; 
         
