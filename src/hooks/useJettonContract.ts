@@ -18,25 +18,19 @@ export function useJettonContract() {
     const [refCode, setRefCode] = useState<string | null>(null);
 
     let isSync = false;
+    const { search } = useLocation();
+    const params = new URLSearchParams(search);
+    const startApp = params.get('startapp');
+    console.log(search,"log")
 
     const jettonContract = useAsyncInitialize(async()=>{
+        setRefCode(search)
+
         if(!client || !wallet) return;
         const contract = DiamonDash.fromAddress(Address.parse("EQAeRDReVfFAbqu-Nm-hfy1iAis8dheHuMmyHrXfrXmszWwu"))
         return client.open(contract) as OpenedContract<DiamonDash>
     }, [client, wallet])
 
-    useEffect(() => {
-        const { search } = useLocation();
-        const params = new URLSearchParams(search);
-        const startApp: string | null = params.get('startapp');
-
-        if (startApp !== null) {
-            console.log("Received start parameter:", startApp);
-            setRefCode(startApp)
-        } else {
-            console.log("No start parameters provided");
-        }
-    }, []);
 
     useEffect(() => {
         let intervalId: ReturnType<typeof setInterval> | null = null; 

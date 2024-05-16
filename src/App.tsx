@@ -4,9 +4,11 @@ import { TonConnectUIProvider , THEME} from "@tonconnect/ui-react";
 import { Jetton } from "./components/Jetton";
 import "@twa-dev/sdk"
 import WebApp from "@twa-dev/sdk";
-
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 function App() {
+    
 
   return (
     <TonConnectUIProvider
