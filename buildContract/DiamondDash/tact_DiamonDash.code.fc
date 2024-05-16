@@ -1,0 +1,312 @@
+#pragma version =0.4.4;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+#include "tact_DiamonDash.headers.fc";
+#include "tact_DiamonDash.stdlib.fc";
+#include "tact_DiamonDash.constants.fc";
+#include "tact_DiamonDash.storage.fc";
+
+;;
+;; Contract DiamonDash functions
+;;
+
+(slice, int, int, int, cell, cell) $DiamonDash$_contract_init(int $id) impure inline_ref {
+    var (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)) = (null(), null(), null(), null(), null(), null());
+    $self'id = $id;
+    $self'refnumber = 10000;
+    $self'taxes = 0;
+    $self'owner = __tact_context_get_sender();
+    $self'balances = null();
+    $self'promos = null();
+    return ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos);
+}
+
+((slice, int, int, int, cell, cell), tuple) $DiamonDash$_fun_balanceOff((slice, int, int, int, cell, cell) $self, slice $address) impure inline_ref {
+    var (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)) = $self;
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), $User$_load_opt(__tact_dict_get_slice_cell($self'balances, 267, $address)));
+}
+
+((slice, int, int, int, cell, cell), int) $DiamonDash$_fun_getRewards((slice, int, int, int, cell, cell) $self, slice $address) impure inline_ref {
+    var (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)) = $self;
+    var ($myUser'deposit, $myUser'prom_code, $myUser'lastCheck, $myUser'upCheck, $myUser'level, $myUser'roi, $myUser'penalty) = $User$_not_null(($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_balanceOff($address));
+    if ((now() <= $myUser'lastCheck)) {
+        return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), 0);
+    }
+    int $secondsPassed = (now() - $myUser'lastCheck);
+    int $userROI = (($myUser'penalty == true) ? ($myUser'roi - 1) : $myUser'roi);
+    int $dailyROI = (($myUser'deposit * $userROI) / 1000);
+    if (($secondsPassed > 172800)) {
+        $secondsPassed = 172800;
+    }
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), (($secondsPassed * $dailyROI) / 86400));
+}
+
+((slice, int, int, int, cell, cell), ()) $DiamonDash$_fun_sendtax((slice, int, int, int, cell, cell) $self) impure inline_ref {
+    var (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)) = $self;
+    $global_send($SendParameters$_constructor_to_value($self'owner, $self'taxes));
+    $self'taxes = 0;
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), ());
+}
+
+((slice, int, int, int, cell, cell), ()) $DiamonDash$_fun_withdraw((slice, int, int, int, cell, cell) $self) impure inline_ref {
+    var (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)) = $self;
+    var ($myUser'deposit, $myUser'prom_code, $myUser'lastCheck, $myUser'upCheck, $myUser'level, $myUser'roi, $myUser'penalty) = $User$_not_null(($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_balanceOff(__tact_context_get_sender()));
+    int $rewards = ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_getRewards(__tact_context_get_sender());
+    if (($rewards > 100000000)) {
+        $self'taxes = $self'taxes + (($rewards * 4) / 100);
+        $self'balances~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $User$_store_cell($User$_constructor_deposit_prom_code_lastCheck_upCheck_level_roi_penalty($myUser'deposit, $myUser'prom_code, now(), $myUser'upCheck, $myUser'level, $myUser'roi, $myUser'penalty)));
+        $global_send($SendParameters$_constructor_to_value(__tact_context_get_sender(), (($rewards * 96) / 100)));
+        if (($self'taxes >= 1000000000)) {
+            ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_sendtax();
+        }
+    }
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), ());
+}
+
+((slice, int, int, int, cell, cell), int) $DiamonDash$_fun_promoCode((slice, int, int, int, cell, cell) $self, slice $address) impure inline_ref {
+    var (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)) = $self;
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), __tact_dict_get_int_int($self'promos, 257, $User$_get_prom_code($User$_not_null(($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_balanceOff(__tact_context_get_sender()))), 257));
+}
+
+((slice, int, int, int, cell, cell), int) $DiamonDash$_fun_lastCheck((slice, int, int, int, cell, cell) $self, slice $address) impure inline_ref {
+    var (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)) = $self;
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), $User$_get_lastCheck($User$_not_null(($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_balanceOff($address))));
+}
+
+((slice, int, int, int, cell, cell), int) $DiamonDash$_fun_mybalance((slice, int, int, int, cell, cell) $self) impure inline_ref {
+    var (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)) = $self;
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), __tact_my_balance());
+}
+
+((slice, int, int, int, cell, cell), slice) $DiamonDash$_fun_owner((slice, int, int, int, cell, cell) $self) impure inline_ref {
+    var (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)) = $self;
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), $self'owner);
+}
+
+;;
+;; Receivers of a Contract DiamonDash
+;;
+
+(((slice, int, int, int, cell, cell)), ()) $DiamonDash$_internal_binary_BuyPickAxe((slice, int, int, int, cell, cell) $self, (int) $msg) impure inline {
+    var ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos) = $self;
+    var ($msg'ref) = $msg;
+    throw_unless(3935, ($Context$_get_value(__tact_context_get()) >= 10000000));
+    throw_unless(41626, ( (($self'refnumber > 10000)) ? (true) : (( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) )) ));
+    tuple $myUser = ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_balanceOff(__tact_context_get_sender());
+    int $taxes = (($Context$_get_value(__tact_context_get()) * 4) / 100);
+    $self'taxes = $self'taxes + $taxes;
+    if ((~ null?($myUser))) {
+        var ($myUser2'deposit, $myUser2'prom_code, $myUser2'lastCheck, $myUser2'upCheck, $myUser2'level, $myUser2'roi, $myUser2'penalty) = $User$_not_null(($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_balanceOff(__tact_context_get_sender()));
+        ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_withdraw();
+        $self'balances~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $User$_store_cell($User$_constructor_deposit_prom_code_lastCheck_upCheck_level_roi_penalty(($Context$_get_value(__tact_context_get()) + ($myUser2'deposit - $taxes)), $myUser2'prom_code, $myUser2'lastCheck, $myUser2'upCheck, $myUser2'level, $myUser2'roi, $myUser2'penalty)));
+    } else {
+        $self'balances~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $User$_store_cell($User$_constructor_deposit_prom_code_lastCheck_upCheck_level_roi_penalty(($Context$_get_value(__tact_context_get()) - $taxes), $self'refnumber, now(), 0, 1, 7, false)));
+        $self'promos~__tact_dict_set_int_int(257, $self'refnumber, 0, 257);
+        $self'refnumber = ($self'refnumber + 1);
+    }
+    if (($self'taxes >= 1000000000)) {
+        ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_sendtax();
+    }
+    int $my_code = $User$_get_prom_code($User$_not_null(($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_balanceOff(__tact_context_get_sender())));
+    int $ref_rewards = __tact_dict_get_int_int($self'promos, 257, $msg'ref, 257);
+    int $my_rewards = __tact_not_null(__tact_dict_get_int_int($self'promos, 257, $my_code, 257));
+    if (( ((~ null?($ref_rewards))) ? (($my_code != $msg'ref)) : (false) )) {
+        $self'promos~__tact_dict_set_int_int(257, $my_code, ($my_rewards + (($Context$_get_value(__tact_context_get()) * 2) / 100)), 257);
+        $self'promos~__tact_dict_set_int_int(257, $msg'ref, (__tact_not_null(__tact_dict_get_int_int($self'promos, 257, $msg'ref, 257)) + (($Context$_get_value(__tact_context_get()) * 8) / 100)), 257);
+    } else {
+        $self'promos~__tact_dict_set_int_int(257, 10000, (__tact_not_null(__tact_dict_get_int_int($self'promos, 257, 10000, 257)) + (($Context$_get_value(__tact_context_get()) * 8) / 100)), 257);
+    }
+    $global_emit($NewBuy$_store_cell($NewBuy$_constructor_amount_sender($Context$_get_value(__tact_context_get()), __tact_context_get_sender())));
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), ());
+}
+
+((slice, int, int, int, cell, cell), ()) $DiamonDash$_internal_text_10afebcfc3fc2db72c41c6d873a6960471b5941d6ed47dffc695eace74dd6f67((slice, int, int, int, cell, cell) $self) impure inline {
+    var ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos) = $self;
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), ());
+}
+
+((slice, int, int, int, cell, cell), ()) $DiamonDash$_internal_text_047428161644b549777373c2ab243ff85f0c571688ab4a3c9bc7dfc1cc8f4c8a((slice, int, int, int, cell, cell) $self) impure inline {
+    var ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos) = $self;
+    throw_unless(46399, ( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) ));
+    $global_send($SendParameters$_constructor_to_value($self'owner, __tact_my_balance()));
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), ());
+}
+
+((slice, int, int, int, cell, cell), ()) $DiamonDash$_internal_text_250b76e2b9576fc6b4c45129483006b0003a0c39b6f7ae413d177f4e3479dbca((slice, int, int, int, cell, cell) $self) impure inline {
+    var ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos) = $self;
+    ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_withdraw();
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), ());
+}
+
+((slice, int, int, int, cell, cell), ()) $DiamonDash$_internal_text_c1aee19fdcb2e1fc24253d407c2a01609e68beaf5dd599dc00916f7cb4066764((slice, int, int, int, cell, cell) $self) impure inline {
+    var ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos) = $self;
+    throw_unless(16798, ($Context$_get_value(__tact_context_get()) == 1000000000));
+    var ($myUser'deposit, $myUser'prom_code, $myUser'lastCheck, $myUser'upCheck, $myUser'level, $myUser'roi, $myUser'penalty) = $User$_not_null(($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_balanceOff(__tact_context_get_sender()));
+    $self'taxes = $self'taxes + $Context$_get_value(__tact_context_get());
+    throw_unless(9760, ((now() - $myUser'upCheck) >= 86400));
+    int $random = $global_random(0, 100);
+    if (($random < (97 - ($myUser'level * 2)))) {
+        $self'balances~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $User$_store_cell($User$_constructor_deposit_prom_code_lastCheck_upCheck_level_roi_penalty($myUser'deposit, $myUser'prom_code, $myUser'lastCheck, now(), ($myUser'level + 1), ($myUser'roi + 1), false)));
+        $global_emit(__gen_cell_comment_37e90db9d1f7725dc0128ee6bad2035fb50479e09a488a29257bed01a23050a0());
+    } else {
+        $self'balances~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $User$_store_cell($User$_constructor_deposit_prom_code_lastCheck_upCheck_level_roi_penalty($myUser'deposit, $myUser'prom_code, $myUser'lastCheck, now(), $myUser'level, $myUser'roi, true)));
+        $global_emit(__gen_cell_comment_c085d7ae844349c72b92f504a0beacb453e6d611694b2a766ae1494d653b65b1());
+    }
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), ());
+}
+
+(((slice, int, int, int, cell, cell)), ()) $DiamonDash$_internal_binary_Deploy((slice, int, int, int, cell, cell) $self, (int) $deploy) impure inline {
+    var ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos) = $self;
+    var ($deploy'queryId) = $deploy;
+    ($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos)~$DiamonDash$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
+    return (($self'owner, $self'id, $self'refnumber, $self'taxes, $self'balances, $self'promos), ());
+}
+
+;;
+;; Get methods of a Contract DiamonDash
+;;
+
+_ %getRewards(slice $$address) method_id(105294) {
+    slice $address = __tact_verify_address($$address);
+    var self = $DiamonDash$_contract_load();
+    var res = self~$DiamonDash$_fun_getRewards($address);
+    return res;
+}
+
+_ %balanceOff(slice $$address) method_id(82109) {
+    slice $address = __tact_verify_address($$address);
+    var self = $DiamonDash$_contract_load();
+    var res = self~$DiamonDash$_fun_balanceOff($address);
+    return $User$_to_opt_external(res);
+}
+
+_ %promoCode(slice $$address) method_id(96523) {
+    slice $address = __tact_verify_address($$address);
+    var self = $DiamonDash$_contract_load();
+    var res = self~$DiamonDash$_fun_promoCode($address);
+    return res;
+}
+
+_ %lastCheck(slice $$address) method_id(83972) {
+    slice $address = __tact_verify_address($$address);
+    var self = $DiamonDash$_contract_load();
+    var res = self~$DiamonDash$_fun_lastCheck($address);
+    return res;
+}
+
+_ %mybalance() method_id(121299) {
+    var self = $DiamonDash$_contract_load();
+    var res = self~$DiamonDash$_fun_mybalance();
+    return res;
+}
+
+_ %owner() method_id(83229) {
+    var self = $DiamonDash$_contract_load();
+    var res = self~$DiamonDash$_fun_owner();
+    return res;
+}
+
+_ supported_interfaces() method_id {
+    return (
+        "org.ton.introspection.v0"H >> 128,
+        "org.ton.abi.ipfs.v0"H >> 128,
+        "org.ton.deploy.lazy.v0"H >> 128,
+        "org.ton.chain.workchain.v0"H >> 128,
+        "org.ton.ownable"H >> 128
+    );
+}
+
+_ get_abi_ipfs() method_id {
+    return "ipfs://QmdTcu2yJ5rmqdTadVc19AEBtVVCRkeXttAQiMbfJ9NCB9";
+}
+
+_ lazy_deployment_completed() method_id {
+    return get_data().begin_parse().load_int(1);
+}
+
+;;
+;; Routing of a Contract DiamonDash
+;;
+
+((slice, int, int, int, cell, cell), int) $DiamonDash$_contract_router_internal((slice, int, int, int, cell, cell) self, int msg_bounced, slice in_msg) impure inline_ref {
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    
+    ;; Receive BuyPickAxe message
+    if (op == 3958890759) {
+        var msg = in_msg~$BuyPickAxe$_load();
+        self~$DiamonDash$_internal_binary_BuyPickAxe(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Deploy message
+    if (op == 2490013878) {
+        var msg = in_msg~$Deploy$_load();
+        self~$DiamonDash$_internal_binary_Deploy(msg);
+        return (self, true);
+    }
+    
+    ;; Text Receivers
+    if (op == 0) {
+        var text_op = slice_hash(in_msg);
+        
+        ;; Receive "Add" message
+        if (text_op == 0x10afebcfc3fc2db72c41c6d873a6960471b5941d6ed47dffc695eace74dd6f67) {
+            self~$DiamonDash$_internal_text_10afebcfc3fc2db72c41c6d873a6960471b5941d6ed47dffc695eace74dd6f67();
+            return (self, true);
+        }
+        
+        ;; Receive "GetBalance" message
+        if (text_op == 0x047428161644b549777373c2ab243ff85f0c571688ab4a3c9bc7dfc1cc8f4c8a) {
+            self~$DiamonDash$_internal_text_047428161644b549777373c2ab243ff85f0c571688ab4a3c9bc7dfc1cc8f4c8a();
+            return (self, true);
+        }
+        
+        ;; Receive "Withdraw" message
+        if (text_op == 0x250b76e2b9576fc6b4c45129483006b0003a0c39b6f7ae413d177f4e3479dbca) {
+            self~$DiamonDash$_internal_text_250b76e2b9576fc6b4c45129483006b0003a0c39b6f7ae413d177f4e3479dbca();
+            return (self, true);
+        }
+        
+        ;; Receive "Upgrade" message
+        if (text_op == 0xc1aee19fdcb2e1fc24253d407c2a01609e68beaf5dd599dc00916f7cb4066764) {
+            self~$DiamonDash$_internal_text_c1aee19fdcb2e1fc24253d407c2a01609e68beaf5dd599dc00916f7cb4066764();
+            return (self, true);
+        }
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = -(msg_flags & 1);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = $DiamonDash$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$DiamonDash$_contract_router_internal(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(130, handled);
+    
+    ;; Persist state
+    $DiamonDash$_contract_store(self);
+}

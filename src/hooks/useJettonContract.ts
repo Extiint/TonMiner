@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Address, fromNano, OpenedContract, toNano } from "ton-core";
-import {DiamonDash , BuyPickAxe } from "../../build/DiamondDash/tact_DiamonDash";
+import {DiamonDash , BuyPickAxe } from "../../buildContract/DiamondDash/tact_DiamonDash";
 import { useAsyncInitialize } from "./useAsyncInitialize";
 import { useTonClient } from "./useTonClient";
 import { useTonConnect } from "./useTonConnect";
@@ -18,8 +18,16 @@ export function useJettonContract() {
     const [refCode, setRefCode] = useState<string | null>(null);
 
     let isSync = false;
+    const { search } = useLocation();
+    const params = new URLSearchParams(search);
+    const startApp = params.get('startapp');
+    
+
     const jettonContract = useAsyncInitialize(async()=>{
+        
+    console.log(search,"log")
         if(!client || !wallet) return;
+        setRefCode(search)
         const contract = DiamonDash.fromAddress(Address.parse("EQAeRDReVfFAbqu-Nm-hfy1iAis8dheHuMmyHrXfrXmszWwu"))
         return client.open(contract) as OpenedContract<DiamonDash>
     }, [client, wallet])
