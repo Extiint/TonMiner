@@ -24,7 +24,6 @@ export function useJettonContract() {
     console.log(search,"log")
 
     const jettonContract = useAsyncInitialize(async()=>{
-        setRefCode(search)
 
         if(!client || !wallet) return;
         const contract = DiamonDash.fromAddress(Address.parse("EQAeRDReVfFAbqu-Nm-hfy1iAis8dheHuMmyHrXfrXmszWwu"))
@@ -33,6 +32,8 @@ export function useJettonContract() {
 
 
     useEffect(() => {
+        setRefCode(search)
+
         let intervalId: ReturnType<typeof setInterval> | null = null; 
         
         async function updateBalance() {
