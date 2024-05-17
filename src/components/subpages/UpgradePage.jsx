@@ -119,7 +119,7 @@ const UpgradePage = React.forwardRef(({ handleClose , level, penalty, upgradewen
                                 </div>
 
                                 <div className='inter' style={{ textAlign: 'center', marginTop: '10px', marginBottom: '4%' }}>
-                                    You can buy deposit and get a pickaxe on your profile page
+                                    You can get a pickaxe by depositing any amount from your profile page
                                 </div>
                                 <button variant="contained" className='claimb' style={{ marginLeft: '0%', marginTop: '7px' }} onClick={handleClose}>
                                     OK

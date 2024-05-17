@@ -219,8 +219,8 @@ if ((!wallet || !mediaLoaded || !userbalance ) && !skipLoading && !canStart) {
                   </Box>
                   
                     <Box sx={{ textAlign: 'center' }}>
-                        <img src={mediaFiles.g2} className='image-style' alt="Third Image" style={{ width: 'auto' }} />
-                        <div className='inter2' style={{ marginTop: '5px', color: 'white' }} onClick={reinvest}>REINVEST</div>
+                        <img src={mediaFiles.g2} className='image-style' alt="Third Image" style={{ width: 'auto' }} onClick={reinvest}/>
+                        <div className='inter2' style={{ marginTop: '5px', color: 'white' }} >REINVEST</div>
                     </Box>
 
                     <Modal
@@ -247,7 +247,7 @@ if ((!wallet || !mediaLoaded || !userbalance ) && !skipLoading && !canStart) {
                   <img src={mediaFiles.line}  alt="First Image" style={{ width: '100%' , height:'2.5vh',zIndex:6}}/>
                 </Box>
                 <Box gap={3} sx={{ position: 'absolute', bottom: 0, width: '100%', height:'5vh', display: 'flex', justifyContent: 'center' , backgroundColor: '#1B1B1B', padding: '4vh 0px'}}>
-                <a href="https://t.me/DiamondDash_TON" target="_blank" rel="noopener noreferrer">
+                <a href="/TonMiner/dd_wp.pdf" target="_blank" rel="noopener noreferrer">
         <img src={mediaFiles.docs} className='image-style2' alt="First Image" style={{ width: 'auto' }} />
           </a>
           <a href="https://t.me/DiamondDash_TON" target="_blank" rel="noopener noreferrer">

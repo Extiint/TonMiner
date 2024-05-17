@@ -10,14 +10,14 @@ const ProfilePage = React.forwardRef(({ handleClose ,mycode}, ref) => {
         const [translateY, setTranslateY] = useState('-100%');
         const { userAddress , refCode, buy} = useJettonContract();
         const [inputValue, setInputValue] = useState('');
-        const [buttonText, setButtonText] = useState(`https://t.me/diamondDashBot?startapp=${mycode}`);
+        const [buttonText, setButtonText] = useState(`https://t.me/diamondDashBot?start=${mycode}`);
 
         const handleCopy = async () => {
             try {
                 await navigator.clipboard.writeText(buttonText); // Copies the link to the clipboard
                 setButtonText('COPIED!'); // Changes the button text to "COPIED!"
                 setTimeout(() => {
-                    setButtonText(`https://t.me/diamondDashBot?startapp=${mycode}`); // Resets the text after 2 seconds
+                    setButtonText(`https://t.me/diamondDashBot?start=${mycode}`); // Resets the text after 2 seconds
                 }, 2000);
             } catch (err) {
                 console.error('Failed to copy: ', err); // Handle possible errors
@@ -31,7 +31,7 @@ const ProfilePage = React.forwardRef(({ handleClose ,mycode}, ref) => {
 
         return () => clearTimeout(timer);
     }, []);
-    
+
     const handleInvestClick = () => {
         buy(inputValue,BigInt(10000)); 
     };
