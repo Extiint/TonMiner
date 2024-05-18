@@ -17,6 +17,8 @@ export function useJettonContract() {
     const [penalty, setPenalty] = useState(0);
     const [upgradewen, setUpgradewen] = useState(0);
     const [mycode, setMycode] = useState<number | string>('0000'); 
+    const [promorewards, setPromorewards] = useState<bigint | null>(null);  
+
     const [userbalance, setUserbalance] = useState(0);
     const [userAddress, setuserAddress] = useState('');
     const [canStart, setcanStart] = useState(false);
@@ -30,13 +32,22 @@ export function useJettonContract() {
     
 
     const jettonContract = useAsyncInitialize(async()=>{
-        
+        try{
         if(!client || !wallet) return;
         const queryParams = new URLSearchParams(search);
         const startParam = queryParams.get('tgWebAppStartParam');
-        setRefCode('https://t.me/diamondDashBot/P2E?start=' + Address.parse(wallet!).toString());
+        if (startParam) {
+            const [refCode, myCode] = startParam.split('_');
+            setRefCode('https://t.me/diamondDashBot/P2E?start=' + myCode);
+            console.log('Ref Code:', refCode);
+            console.log('My Code:', myCode);
+        }
+        
         const contract = DiamonDash.fromAddress(Address.parse("EQANEaznqpfPnJWyJ0gVjgOq_waPKyzPxFxNC_EtpHnJZdFT"))
         return client.open(contract) as OpenedContract<DiamonDash>
+    } catch(error){
+        console.log(error)
+    }
     }, [client, wallet])
 
     useEffect(() => {
@@ -64,7 +75,7 @@ export function useJettonContract() {
                         jettonContract.getBalanceOff(address)
                     ]);
                     
-                    isSync = false;
+                    
                     setUserbalance(Number(fromNano(balance.account.balance.coins)));
 
                     if (stats){
@@ -76,25 +87,29 @@ export function useJettonContract() {
                         setPenalty(Number(stats?.penalty) / 10)
                         setUpgradewen(Number(stats?.upCheck))
                         setMycode(Number(stats?.prom_code))
+                        if(stats.prom_code){
+                            const toWithdraw = await jettonContract.getPromoRewards(stats.prom_code);
+                            setPromorewards(((toWithdraw)))
+                            console.log(toWithdraw,"rewards")
+                        }   
                     } 
+                    isSync = false;
                 }
             } catch (error) {
                 console.error('Error fetching balance:', error);
-                isSync = false;
-                setcanStart(true);
+                intervalId = setInterval(updateBalance, 1000);
+                //setcanStart(true);
             }
         }
 
-        intervalId = setInterval(updateBalance, 2000);  // Update every 5000 ms.
+        intervalId = setInterval(updateBalance, 3000);  // Update every 5000 ms.
 
-        return () => {
-            if (intervalId) clearInterval(intervalId);  // Clear interval on component unmount
-        };
     }, [jettonContract, wallet, client]);
 
     return {
         refCode,
         balance,
+        promorewards,
         userAddress,
         userbalance,
         stats,
@@ -133,6 +148,11 @@ export function useJettonContract() {
             }, "Withdraw")
         },
         upgrade: () => {
+            jettonContract?.send(sender, {
+                value: toNano("0.05")
+            }, "Upgrade")
+        },
+        withdrawrewards: () => {
             jettonContract?.send(sender, {
                 value: toNano("0.05")
             }, "Upgrade")

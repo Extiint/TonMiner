@@ -6,18 +6,18 @@ import { mediaFiles } from '../../hooks/utils/media';
 import { toNano } from 'ton-core';
 import { useJettonContract } from '../../hooks/useJettonContract';
 
-const ProfilePage = React.forwardRef(({ handleClose ,mycode}, ref) => { 
+const ProfilePage = React.forwardRef(({ handleClose ,mycode, promorewards}, ref) => { 
         const [translateY, setTranslateY] = useState('-100%');
         const { userAddress , refCode, buy} = useJettonContract();
         const [inputValue, setInputValue] = useState('');
-        const [buttonText, setButtonText] = useState(`https://t.me/diamondDashBot?start=${mycode}`);
+        const [buttonText, setButtonText] = useState(`${mycode}`);
 
         const handleCopy = async () => {
             try {
                 await navigator.clipboard.writeText(buttonText); // Copies the link to the clipboard
                 setButtonText('COPIED!'); // Changes the button text to "COPIED!"
                 setTimeout(() => {
-                    setButtonText(`https://t.me/diamondDashBot?start=${mycode}`); // Resets the text after 2 seconds
+                    setButtonText(`${mycode}`); // Resets the text after 2 seconds
                 }, 2000);
             } catch (err) {
                 console.error('Failed to copy: ', err); // Handle possible errors
@@ -120,7 +120,7 @@ const ProfilePage = React.forwardRef(({ handleClose ,mycode}, ref) => {
                         REFERRAL  REWARDS
                         </div>
                         <div className='inter' style={{ textAlign: 'right', marginRight:'5%' }}>
-                            0 TON
+                            {promorewards} TON
                         </div>
                     </Box>
                     <Box display="flex" alignItems="center" justifyContent="center" sx={{ width: '100%', padding: '1vh', marginBottom:0 }}>

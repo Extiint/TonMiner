@@ -11,14 +11,15 @@ import soundoff from '../media/icons/soundoff.png';
 import { Loading } from './subpages/Loading';
 import { loadAllMedia } from '../hooks/utils/media';
 import { mediaFiles } from '../hooks/utils/media';
+import { fromNano } from 'ton-core';
 
 export function Jetton() {
   const { connected, wallet } = useTonConnect();
-  const { canStart ,stats, balance,userbalance ,rewards, hash,roi,level,penalty,upgradewen,mycode, sell ,reinvest} = useJettonContract();
+  const { canStart ,stats, balance,userbalance ,rewards, hash,roi,level,penalty,upgradewen,refCode,promorewards, sell ,reinvest} = useJettonContract();
   const [open, setOpen] = useState(false);
   const [tokenPrice, setTokenPrice] = useState(null);
   const [mediaLoaded, setMediaLoaded] = useState(false);
-  const [skipLoading, setSkipLoading] = useState(false); // State to skip loading
+  const [skipLoading, setSkipLoading] = useState(false);
   const [character, setCharacter] = useState(0);
 
   const [timeLeft, setTimeLeft] = useState('NOW');
@@ -30,7 +31,7 @@ export function Jetton() {
         const interval = setInterval(() => {
             const now = new Date();
             const upgradeTime = new Date(upgradewen * 1000);
-            const upgradeTimePlus24Hrs = new Date(upgradeTime.getTime() + 60 * 1000); //const upgradeTimePlus24Hrs = new Date(upgradeTime.getTime() + 24 * 60 * 60 * 1000);
+            const upgradeTimePlus24Hrs = new Date(upgradeTime.getTime() + 60 * 1000);
 
 
             const timeDifference = upgradeTimePlus24Hrs - now;
@@ -228,7 +229,7 @@ if ((!wallet || !mediaLoaded || !userbalance ) && !skipLoading && !canStart) {
                       onClose={handleClose}
                       sx={{borderWidth:0,borderColor:'none',margin:0}}
                     >
-                      <ProfilePage handleClose={handleClose} mycode={mycode}/>
+                      <ProfilePage handleClose={handleClose} mycode={refCode} promorewards={promorewards ? fromNano(promorewards) : 0}/>
                   </Modal>
                   <Modal
                       open={openUpgrade}
