@@ -29,7 +29,7 @@ export function useJettonContract() {
 
     const [stats, setStats] = useState<User | null>(null); 
     const [rewards, setrewards] = useState(0);
-    const [refCode, setRefCode] = useState<string | null>('https://t.me/diamondDashBot/P2E?start=');
+    const [refCode, setRefCode] = useState<string | null>('https://t.me/diamondDashBot/?start=');
 
     let isSync = false;
     const { search } = useLocation();
@@ -38,18 +38,17 @@ export function useJettonContract() {
     const jettonContract = useAsyncInitialize(async()=>{
         console.log("check1")
         try{
-        if(!client || !wallet) return;
-        console.log("check1 entered")
 
         const queryParams = new URLSearchParams(search);
         const startParam = queryParams.get('tgWebAppStartParam');
         if (startParam) {
             const [refCode, myCode] = startParam.split('_');
-            setRefCode('https://t.me/diamondDashBot/P2E?start=' + myCode);
+            setRefCode('https://t.me/diamondDashBot/?start=' + myCode);
             console.log('Ref Code:', refCode);
             console.log('My Code:', myCode);
         }
-        
+        if(!client || !wallet) return;
+        console.log("check1 entered")
         const contract = DiamonDash.fromAddress(Address.parse("EQANEaznqpfPnJWyJ0gVjgOq_waPKyzPxFxNC_EtpHnJZdFT"))
         return client.open(contract) as OpenedContract<DiamonDash>
     } catch(error){
