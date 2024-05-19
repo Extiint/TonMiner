@@ -6,7 +6,11 @@ import { useTonClient } from "./useTonClient";
 import { useTonConnect } from "./useTonConnect";
 import { useLocation } from "react-router-dom";
 import { User } from "../../build/DiamondDash/tact_DiamonDash";
+import axios from 'axios';
 
+const instance = axios.create({
+  timeout: 10000, // Increase timeout to 10 seconds
+});
 export function useJettonContract() {
     const {client} = useTonClient();
     const {wallet, sender} = useTonConnect();
@@ -32,8 +36,11 @@ export function useJettonContract() {
     
 
     const jettonContract = useAsyncInitialize(async()=>{
+        console.log("check1")
         try{
         if(!client || !wallet) return;
+        console.log("check1 entered")
+
         const queryParams = new URLSearchParams(search);
         const startParam = queryParams.get('tgWebAppStartParam');
         if (startParam) {
@@ -51,59 +58,65 @@ export function useJettonContract() {
     }, [client, wallet])
 
     useEffect(() => {
-        let intervalId: ReturnType<typeof setInterval> | null = null; 
+        let intervalId: ReturnType<typeof setInterval> | null = null;
         async function updateBalance() {
-            
             if (!jettonContract || !wallet || !client) return;
             try {
-                if (isSync){return;}
+                if (isSync) return;
                 isSync = true;
+    
                 const address = Address.parse(Address.parse(wallet!).toString());
                 setuserAddress(Address.parse(wallet!).toString());
-                const fetchedBalance = await jettonContract.getMybalance(); 
-                
+    
+                const fetchedBalance = await jettonContract.getMybalance();
                 const balanceInNano = fromNano(fetchedBalance);
                 setBalance(Number(balanceInNano));
-                
-                if(address){
+                console.log("try")
+                if (address) {
                     const latestBlock = (await client.getLastBlock()).last.seqno;
-                    console.log("helloooooooooooooooooooooooooo")
-                        const [balance ,promo, currRewards, stats] = await Promise.all([
-                        client.getAccount(latestBlock,address),
+    
+                    const [balance, promo, currRewards, stats] = await Promise.all([
+                        client.getAccount(latestBlock, address),
                         jettonContract.getLastCheck(address),
                         jettonContract.getGetRewards(address),
                         jettonContract.getBalanceOff(address)
                     ]);
-                    
-                    
+    
                     setUserbalance(Number(fromNano(balance.account.balance.coins)));
-
-                    if (stats){
+    
+                    if (stats) {
                         setStats(stats);
                         setrewards(Number(fromNano(currRewards)));
-                        setLevel(Number(stats?.level))
-                        sethash(Number(fromNano(stats?.deposit)))
-                        setroi(Number(stats?.roi) / 10)
-                        setPenalty(Number(stats?.penalty) / 10)
-                        setUpgradewen(Number(stats?.upCheck))
-                        setMycode(Number(stats?.prom_code))
-                        if(stats.prom_code){
+                        setLevel(Number(stats?.level));
+                        sethash(Number(fromNano(stats?.deposit)));
+                        setroi(Number(stats?.roi) / 10);
+                        setPenalty(Number(stats?.penalty) / 10);
+                        setUpgradewen(Number(stats?.upCheck));
+                        setMycode(Number(stats?.prom_code));
+    
+                        if (stats.prom_code) {
                             const toWithdraw = await jettonContract.getPromoRewards(stats.prom_code);
-                            setPromorewards(((toWithdraw)))
-                            console.log(toWithdraw,"rewards")
-                        }   
-                    } 
+                            setPromorewards(((toWithdraw)));
+                            console.log(toWithdraw, "rewards");
+                        }
+                    }
                     isSync = false;
                 }
+                console.log("try2")
+
             } catch (error) {
                 console.error('Error fetching balance:', error);
-                intervalId = setInterval(updateBalance, 1000);
-                //setcanStart(true);
+                isSync = false; 
+                updateBalance();
+                setcanStart(true);
             }
         }
-
-        intervalId = setInterval(updateBalance, 3000);  // Update every 5000 ms.
-
+    
+        intervalId = setInterval(updateBalance, 5000);  // Update every 3000 ms.
+    
+        return () => {
+            if (intervalId) clearInterval(intervalId);
+        };
     }, [jettonContract, wallet, client]);
 
     return {
